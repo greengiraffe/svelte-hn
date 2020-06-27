@@ -1,0 +1,22 @@
+// reset button
+button {
+  margin: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: var(--color-accent);
+  }
+}
+
+pre {
+  overflow: auto;
+}
+
+a {
+  word-wrap: break-word;
+}
