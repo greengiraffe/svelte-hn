@@ -17,11 +17,24 @@
 <style>
   .header {
     padding: 0.5em;
+    background: var(--color-commentpage-bg-header);
   }
 
-  h2 {
-    font-size: 1em;
+  .title {
+    font-size: 1.2em;
     line-height: 1.2;
+  }
+
+  .title a:visited {
+    color: var(--color-title);
+  }
+
+  .url {
+    color: var(--color-text--faded);
+  }
+
+  .meta {
+    color: var(--color-text--faded);
   }
 </style>
 
@@ -34,7 +47,10 @@
       <span>{item.domain}</span>
     </div>
     <div class="meta">
-      <span>{item.time_ago} by {item.user}</span>
+      <span>
+        posted {item.time_ago} by {item.user} · {item.points} points · {item.comments_count}
+        comments
+      </span>
     </div>
   </div>
 

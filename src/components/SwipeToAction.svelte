@@ -36,7 +36,8 @@
   }
 
   function handleDragEnd(e) {
-    e.target.releasePointerCapture(e.pointerId)
+    // TODO releasePointerCapture throws an error in (at least) Firefox
+    // e.target.releasePointerCapture(e.pointerId)
     dragging = false
     start = 0
     dragRatio = Math.max(Math.abs(diff) / maxDrag, 0.5)
@@ -69,23 +70,24 @@
 </script>
 
 <style>
-  .wrapper {
+  .sta-wrapper {
     position: relative;
     overflow: hidden;
+    background: inherit;
   }
 
-  .wrapper div {
+  .sta-wrapper div {
     width: 100%;
-    background: #fff;
+    background: inherit;
   }
 
-  .content {
+  .sta-content {
     z-index: 1;
     width: auto;
     touch-action: pan-y;
   }
 
-  .actions {
+  .sta-actions {
     height: 100%;
     width: 100%;
     vertical-align: center;
@@ -99,15 +101,15 @@
     justify-content: space-between;
   }
 
-  .actions > div {
+  .sta-actions > div {
     height: 100%;
   }
 
-  .left {
+  .sta-left {
     text-align: left;
   }
 
-  .right {
+  .sta-right {
     text-align: right;
   }
 </style>
@@ -120,17 +122,17 @@
   <slot />
 {/if}
 
-<div class="wrapper">
-  <div class="actions" style={actionsStyle}>
-    <div class="left">
+<div class="sta-wrapper">
+  <div class="sta-actions" style={actionsStyle}>
+    <div class="sta-left">
       <slot name="action-left" />
     </div>
-    <div class="right">
+    <div class="sta-right">
       <slot name="action-right" />
     </div>
   </div>
   <div
-    class="content"
+    class="sta-content"
     bind:this={itemEl}
     on:pointerdown={handleDragStart}
     on:pointermove={handleMove}

@@ -23,8 +23,24 @@ button {
 
 pre {
   overflow: auto;
+  padding: 0.5em;
+  background: var(--color-grey--light);
+}
+
+code {
+  background: var(--color-grey--light);
 }
 
 a {
   word-wrap: break-word;
+  color: var(--color-link);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--color-link--visited);
+  }
 }

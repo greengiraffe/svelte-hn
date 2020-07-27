@@ -1,10 +1,15 @@
 <script>
   import { fade } from "svelte/transition"
   import { slide } from "../transitions"
-  import { showSidebar } from "../store"
+  import { showSidebar, darkMode } from "../store"
 
   // disable scrolling when sidebar is shown
   $: document.body.style.overflow = $showSidebar ? "hidden" : "unset"
+
+  // toggle dark mode
+  $: $darkMode
+    ? document.body.classList.add("dark")
+    : document.body.classList.remove("dark")
 </script>
 
 <style>
@@ -24,11 +29,23 @@
     z-index: 3;
     background-color: var(--color-background);
     overflow: hidden;
+    padding: 1em;
   }
 </style>
 
 {#if $showSidebar}
-  <div transition:slide class={'sidebar'}>Hello sidebar</div>
+  <div transition:slide class={'sidebar'}>
+    <label>
+      <input
+        type="checkbox"
+        checked={$darkMode}
+        on:click={() => {
+          darkMode.update((v) => !v)
+        }}
+      />
+      Dark Mode
+    </label>
+  </div>
   <div
     transition:fade
     class={'fade-background'}

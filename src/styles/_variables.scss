@@ -9,7 +9,50 @@
   --color-title--faded: hsl(204, 10%, 60%);
   --color-action-background: hsl(204, 81%, 30%);
   --color-action-text: hsl(0, 0%, 100%);
+  --color-overlay: hsla(0, 0%, 0%, 0.5);
+
+  --color-link: hsl(204, 81%, 30%);
+  --color-link--visited: hsl(204, 10%, 60%);
+
   --color-grey--light: hsl(0, 0%, 93%);
   --color-grey--medium: hsl(0, 0%, 53%);
+
+  --color-commentpage-bg-header: var(--color-grey--light);
+
+  --color-bookmark-icon: hsl(19, 93%, 57%);
+
+  --color-newsitem-bg-action: hsl(19, 93%, 57%);
+  --color-newsitem-bg-side: var(--color-grey--light);
+  --color-newsitem-border: var(--color-grey--light);
+  --color-newsitem-comments-hover: var(--color-grey--light);
+  --color-newsitem-icon: var(--color-grey--medium);
+}
+
+.dark {
+  --color-background: hsl(0, 0%, 10%);
+  --color-text: hsl(0, 0%, 96%);
+  --color-text--faded: hsl(0, 0%, 86%);
+  --color-accent: hsl(204, 81%, 45%);
+  --color-appheader-text: hsl(0, 0%, 100%);
+  --color-appheader-background: hsl(204, 81%, 20%);
+  --color-title: hsl(204, 81%, 70%);
+  --color-title--faded: hsl(204, 20%, 50%);
+  --color-action-background: hsl(204, 81%, 30%);
+  --color-action-text: hsl(0, 0%, 100%);
   --color-overlay: hsla(0, 0%, 0%, 0.5);
+
+  --color-commentpage-bg-header: hsl(0, 0%, 20%);
+
+  --color-grey--light: hsl(0, 0%, 93%);
+  --color-grey--medium: hsl(0, 0%, 73%);
+
+  --color-newsitem-bg-side: hsl(0, 0%, 20%);
+  --color-newsitem-border: hsl(0, 0%, 25%);
+  --color-newsitem-comments-hover: hsl(0, 0%, 25%);
+  --color-newsitem-icon: hsl(0, 0%, 40%);
+}
+
+@mixin font-normal {
+  font-size: 13px;
+  line-height: 18px;
 }

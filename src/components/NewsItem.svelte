@@ -34,10 +34,11 @@
       "side title title"
       "side url comments"
       "side meta comments";
-    grid-template-columns: 3em 1fr 4em;
+    grid-template-columns: 3em 1fr 6em;
     grid-template-rows: auto;
     grid-gap: 0 0.5em;
-    border-top: 1px solid #aaa;
+    border-top: 1px solid var(--color-newsitem-border);
+    background-color: var(--color-background);
   }
 
   .side {
@@ -46,7 +47,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--color-grey--light);
+    background-color: var(--color-newsitem-bg-side);
     width: 100%;
     font-size: 0.8em;
     padding: 0.25em 0.5em;
@@ -87,11 +88,19 @@
     justify-self: end;
     align-self: end;
     padding: 0.25em 0.5em;
+    margin: 0.25em;
     font-size: 0.8em;
+    border: 1px solid var(--color-newsitem-border);
+    border-radius: 5px;
+  }
+
+  .comments:hover {
+    text-decoration: none;
+    background-color: var(--color-newsitem-comments-hover);
   }
 
   .action {
-    background-color: var(--color-accent);
+    background-color: var(--color-newsitem-bg-action);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -103,14 +112,13 @@
   :global(.comments-icon) {
     vertical-align: sub;
     margin-left: 5px;
-    fill: var(--color-grey--medium) !important;
   }
 
   :global(.bookmark-icon) {
     position: absolute;
     right: 0;
     top: -1px;
-    fill: var(--color-accent) !important;
+    fill: var(--color-bookmark-icon) !important;
     opacity: 0;
     transition: opacity 0.2s ease;
   }
@@ -120,7 +128,7 @@
   }
 
   :global(.briefcase-icon) {
-    fill: var(--color-grey--medium) !important;
+    fill: var(--color-newsitem-icon) !important;
     margin-bottom: 0.2em;
   }
 </style>
@@ -141,7 +149,10 @@
       <a href={item.url}>{item.title}</a>
     </h2>
     <div class="meta">
-      <span>{item.time_ago} by {item.user}</span>
+      <span>{item.time_ago}</span>
+      {#if item.user}
+        <span>by {item.user}</span>
+      {/if}
     </div>
     <div class="url">
       <span>{item.domain}</span>

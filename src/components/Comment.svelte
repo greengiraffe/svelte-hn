@@ -1,12 +1,16 @@
 <script>
   export let comment
+  export let showingReplies
+
+  let replyToggleSymbol = "+"
+  $: replyToggleSymbol = showingReplies ? "–" : "+"
 
   import { createEventDispatcher } from "svelte"
 
   const dispatch = createEventDispatcher()
 
   const hue = (comment.level * 70 + 204) % 360 // rainbow
-  const color = `hsl(${hue}, 50%, 50%);`
+  const color = `${hue}, 50%, 50%`
   const commentCount = comment.comments.length
   const commentString = commentCount === 1 ? "comment" : "comments"
   const firstLevel = comment.level === 0
@@ -20,9 +24,13 @@
 
 <style>
   .comment {
+    --current-color: 128, 128, 128; /* set by JS, for indentation styles */
     padding: 0.5em;
-    background-color: white;
+    background-color: var(--color-background);
     border-left: 0.25rem solid;
+    font-size: var(--font-size-s);
+    border-color: hsl(var(--current-color));
+    border-top: 1px solid hsla(var(--current-color), 0.3);
   }
 
   .firstLevel {
@@ -33,13 +41,13 @@
     display: flex;
     justify-content: space-between;
     color: var(--color-text--faded);
-    font-size: 1em;
     line-height: 1.2;
     margin-bottom: 1em;
   }
 
   h3 {
-    font-size: 1em;
+    font-size: inherit;
+    color: hsl(var(--current-color));
   }
 
   li {
@@ -48,9 +56,17 @@
   }
 
   .content {
-    font-size: 1em;
     line-height: 1.2;
     padding-bottom: 1em;
+  }
+
+  .footer {
+    color: var(--color-text--faded);
+  }
+
+  .reply-toggle-symbol {
+    display: inline-block;
+    width: 1ch;
   }
 
   :global(p + p) {
@@ -60,12 +76,12 @@
 
 <div
   class="comment"
-  style={`border-color: ${color}`}
+  style={`--current-color: ${color}`}
   class:firstLevel
   on:click={toggleReplies}
 >
   <div class="header">
-    <h3 style={`color: ${color}`}>{comment.user}</h3>
+    <h3>{comment.user}</h3>
     <span>{comment.time_ago}</span>
   </div>
   <div class="content">
@@ -73,7 +89,8 @@
   </div>
   <div class="footer">
     {#if commentCount > 0}
-      <span>{commentCount} {commentString}</span>
+      <span class="reply-toggle-symbol">{replyToggleSymbol}</span>
+      <span class="comment-count">{commentCount} {commentString}</span>
     {/if}
   </div>
 </div>

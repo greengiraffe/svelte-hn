@@ -50,7 +50,11 @@
   <ul class="comment-tree" transition:slide={{ duration: 300 }}>
     {#each comments as comment}
       <li>
-        <Comment {comment} on:toggle-replies={toggleReplies} />
+        <Comment
+          {comment}
+          on:toggle-replies={toggleReplies}
+          showingReplies={expandedReplies.indexOf(comment.id) !== -1}
+        />
         {#if expandedReplies.indexOf(comment.id) !== -1}
           <svelte:self comments={comment.comments} />
         {/if}
@@ -61,7 +65,11 @@
   <ul class="comment-tree">
     {#each comments as comment}
       <li>
-        <Comment {comment} on:toggle-replies={toggleReplies} />
+        <Comment
+          {comment}
+          on:toggle-replies={toggleReplies}
+          showingReplies={expandedReplies.indexOf(comment.id) !== -1}
+        />
         {#if expandedReplies.indexOf(comment.id) !== -1}
           <svelte:self comments={comment.comments} />
         {/if}
