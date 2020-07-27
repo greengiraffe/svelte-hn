@@ -52,14 +52,16 @@ export default {
     // instead of npm run dev), minify
     production && terser(),
 
-    // Process environment variables
-    replace({
-      process: JSON.stringify({
-        env: {
-          ...config().parsed,
-        },
+    // Process environment variables (disabled for production
+    // as the env variables are then provided by the hoster)
+    !production &&
+      replace({
+        process: JSON.stringify({
+          env: {
+            ...config().parsed,
+          },
+        }),
       }),
-    }),
   ],
   watch: {
     clearScreen: false,
