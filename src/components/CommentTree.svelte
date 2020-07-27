@@ -45,14 +45,27 @@
   }
 </style>
 
-<!-- TODO Prevent transition on outer comment tree -->
-<ul class="comment-tree" transition:slide={{ duration: 300 }}>
-  {#each comments as comment}
-    <li>
-      <Comment {comment} on:toggle-replies={toggleReplies} />
-      {#if expandedReplies.indexOf(comment.id) !== -1}
-        <svelte:self comments={comment.comments} />
-      {/if}
-    </li>
-  {/each}
-</ul>
+<!-- TODO Find more elegant solution to prevent transition on outer comment tree -->
+{#if comments[0].level > 0}
+  <ul class="comment-tree" transition:slide={{ duration: 300 }}>
+    {#each comments as comment}
+      <li>
+        <Comment {comment} on:toggle-replies={toggleReplies} />
+        {#if expandedReplies.indexOf(comment.id) !== -1}
+          <svelte:self comments={comment.comments} />
+        {/if}
+      </li>
+    {/each}
+  </ul>
+{:else}
+  <ul class="comment-tree">
+    {#each comments as comment}
+      <li>
+        <Comment {comment} on:toggle-replies={toggleReplies} />
+        {#if expandedReplies.indexOf(comment.id) !== -1}
+          <svelte:self comments={comment.comments} />
+        {/if}
+      </li>
+    {/each}
+  </ul>
+{/if}
