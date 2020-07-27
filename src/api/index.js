@@ -1,6 +1,6 @@
 // import { news, item } from "./mockApiResponse"
 
-const BASE_URL = "https://node-hnapi.herokuapp.com/"
+const BASE_URL = process.env.API_URL
 
 const API = {
   async news(page = 1) {
