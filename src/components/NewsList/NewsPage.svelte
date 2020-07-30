@@ -1,8 +1,8 @@
 <script>
   import { onMount } from "svelte"
 
-  import API from "../api"
-  import NewsItem from "../components/NewsItem.svelte"
+  import API from "../../api"
+  import NewsItem from "./NewsItem.svelte"
 
   // svelte-routing
   export let location

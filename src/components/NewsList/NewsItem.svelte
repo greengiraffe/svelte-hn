@@ -7,7 +7,7 @@
     faBookmark,
   } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-routing"
-  import SwipeToAction from "./SwipeToAction.svelte"
+  import SwipeToAction from "../SwipeToAction.svelte"
 
   export let item
   export let num

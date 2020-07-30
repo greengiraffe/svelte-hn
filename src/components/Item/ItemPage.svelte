@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
-  import API from "../api"
-  import CommentTree from "../components/CommentTree.svelte"
+  import API from "../../api"
+  import CommentTree from "./CommentTree.svelte"
 
   // svelte-routing
   export let location

@@ -1,5 +1,5 @@
 <script>
-  import ItemPage from "./pages/ItemPage.svelte"
+  import ItemPage from "./components/Item/ItemPage.svelte"
 
   import { Router, Route } from "svelte-routing"
 
@@ -7,7 +7,7 @@
 
   import TitleBar from "./components/TitleBar.svelte"
   import SideBar from "./components/SideBar.svelte"
-  import NewsPage from "./pages/NewsPage.svelte"
+  import NewsPage from "./components/NewsList/NewsPage.svelte"
 </script>
 
 <style lang="scss" global>
