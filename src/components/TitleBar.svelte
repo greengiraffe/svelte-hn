@@ -9,7 +9,7 @@
     display: flex;
     background-color: var(--color-appheader-background);
     position: sticky;
-    z-index: 2;
+    z-index: 3;
     top: 0;
     left: 0;
   }

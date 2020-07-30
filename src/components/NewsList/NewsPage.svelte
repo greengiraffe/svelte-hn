@@ -3,6 +3,7 @@
 
   import API from "../../api"
   import NewsItem from "./NewsItem.svelte"
+  import LoadingOverlay from "../LoadingOverlay.svelte"
 
   // svelte-routing
   export let location
@@ -27,5 +28,5 @@
     {/each}
   </ul>
 {:else}
-  <p>Loading...</p>
+  <LoadingOverlay />
 {/if}

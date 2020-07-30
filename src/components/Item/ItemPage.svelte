@@ -2,6 +2,7 @@
   import { onMount } from "svelte"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
+  import LoadingOverlay from "../LoadingOverlay.svelte"
 
   // svelte-routing
   export let location
@@ -55,4 +56,6 @@
   </div>
 
   <CommentTree comments={item.comments} />
+{:else}
+  <LoadingOverlay />
 {/if}
