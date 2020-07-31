@@ -24,7 +24,8 @@
   <main>
     <TitleBar />
     <SideBar />
-    <Route path="/" component={NewsPage} />
+    <Route path="/" component={NewsPage} storyType="top" />
+    <Route path="/:storyType" component={NewsPage} />
     <Route path="item/:id" component={ItemPage} />
   </main>
 </Router>

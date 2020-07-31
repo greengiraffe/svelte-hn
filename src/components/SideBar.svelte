@@ -1,4 +1,5 @@
 <script>
+  import { links } from "svelte-routing"
   import { fade } from "svelte/transition"
   import { slide } from "../transitions"
   import { showSidebar, darkMode } from "../store"
@@ -31,10 +32,24 @@
     overflow: hidden;
     padding: 1em;
   }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+  }
 </style>
 
 {#if $showSidebar}
   <div transition:slide class={'sidebar'}>
+    <nav use:links>
+      <a href="/top">Top</a>
+      <a href="/new">New</a>
+      <a href="/best">Best</a>
+      <a href="/ask">Ask</a>
+      <a href="/show">Show</a>
+      <a href="/jobs">Jobs</a>
+    </nav>
+
     <label>
       <input
         type="checkbox"
@@ -45,6 +60,7 @@
       />
       Dark Mode
     </label>
+
   </div>
   <div
     transition:fade
