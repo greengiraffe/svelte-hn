@@ -1,6 +1,6 @@
 // import { news, item } from "./mockApiResponse"
 
-const BASE_URL = process.env.API_URL
+const BASE_URL = __ENV_VARS__.API_URL
 
 const API = {
   async news(page = 1) {

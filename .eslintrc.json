@@ -4,6 +4,9 @@
     "es6": true,
     "jest": true
   },
+  "globals": {
+    "__ENV_VARS__": "readonly"
+  },
   "plugins": ["svelte3"],
   "extends": ["standard", "prettier"],
   "overrides": [
