@@ -9,6 +9,11 @@ import { config } from "dotenv"
 
 const production = !process.env.ROLLUP_WATCH
 
+// Load environment variables from .env for local development,
+// in production retrieve them from Node. The variables are used by
+// the rollup replace plugin lateron.
+const envVars = production ? process.env : config().parsed
+
 export default {
   input: "src/main.js",
   output: {
@@ -52,16 +57,12 @@ export default {
     // instead of npm run dev), minify
     production && terser(),
 
-    // Process environment variables (disabled for production
-    // as the env variables are then provided by the hoster)
-    !production &&
-      replace({
-        process: JSON.stringify({
-          env: {
-            ...config().parsed,
-          },
-        }),
+    // Process environment variables
+    replace({
+      __ENV_VARS__: JSON.stringify({
+        ...envVars,
       }),
+    }),
   ],
   watch: {
     clearScreen: false,
