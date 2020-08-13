@@ -6,6 +6,7 @@ import commonjs from "@rollup/plugin-commonjs"
 import livereload from "rollup-plugin-livereload"
 import { terser } from "rollup-plugin-terser"
 import { config } from "dotenv"
+import { generateSW } from "rollup-plugin-workbox"
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -17,7 +18,7 @@ const envVars = production ? process.env : config().parsed
 export default {
   input: "src/main.js",
   output: {
-    sourcemap: true,
+    sourcemap: !production,
     format: "iife",
     name: "app",
     file: "public/build/bundle.js",
@@ -29,7 +30,7 @@ export default {
       // we'll extract any component CSS out into
       // a separate file - better for performance
       css: (css) => {
-        css.write("public/build/bundle.css")
+        css.write("public/build/bundle.css", !production)
       },
       preprocess: [sveltePreprocess({ scss: true })],
     }),
@@ -56,6 +57,20 @@ export default {
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+
+    // Generate a service worker using workbox
+    generateSW({
+      swDest: "public/service-worker.js",
+      sourcemap: !production,
+      globDirectory: "public",
+      globPatterns: ["**/*.{html,js,css,woff2}"],
+      runtimeCaching: [
+        {
+          urlPattern: /\.(png|ico|jpg|svg)$/,
+          handler: "CacheFirst",
+        },
+      ],
+    }),
 
     // Process environment variables
     replace({
