@@ -13,7 +13,10 @@ const production = !process.env.ROLLUP_WATCH
 // Load environment variables from .env for local development,
 // in production retrieve them from Node. The variables are used by
 // the rollup replace plugin lateron.
-const envVars = production ? process.env : config().parsed
+const envVars = {
+  ...config().parsed,
+  API_URL: process.env.API_URL,
+}
 
 export default {
   input: "src/main.js",
