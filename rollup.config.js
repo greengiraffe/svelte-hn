@@ -61,19 +61,21 @@ export default {
     // instead of npm run dev), minify
     production && terser(),
 
-    // Generate a service worker using workbox
-    generateSW({
-      swDest: "public/service-worker.js",
-      sourcemap: !production,
-      globDirectory: "public",
-      globPatterns: ["**/*.{html,js,css,woff2}"],
-      runtimeCaching: [
-        {
-          urlPattern: /\.(png|ico|jpg|svg)$/,
-          handler: "CacheFirst",
-        },
-      ],
-    }),
+    // Generate a service worker using workbox for production
+    production &&
+      generateSW({
+        swDest: "public/service-worker.js",
+        sourcemap: !production,
+        globDirectory: "public",
+        globPatterns: ["**/*.{html,js,css,woff2}"],
+        cleanupOutdatedCaches: true,
+        runtimeCaching: [
+          {
+            urlPattern: /\.(png|ico|jpg|svg)$/,
+            handler: "CacheFirst",
+          },
+        ],
+      }),
 
     // Process environment variables
     replace({
