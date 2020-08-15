@@ -1,48 +1,75 @@
 <script>
-  import { onMount, beforeUpdate, afterUpdate, tick } from "svelte"
-  import { showSidebar } from "../../store"
-
+  import { afterUpdate, onDestroy } from "svelte"
+  import { fade } from "svelte/transition"
+  import { get } from "svelte/store"
+  import { navigate } from "svelte-routing"
+  import { showSidebar, currentStoryType } from "../../store"
   import API from "../../api"
-  import { validStoryType } from "../../api/storyTypes"
   import NewsItem from "./NewsItem.svelte"
-  import LoadingOverlay from "../LoadingOverlay.svelte"
+  import NewsItemsLoading from "./NewsItemsLoading.svelte"
+  import { InvalidStoryTypeError } from "../../api/errors"
 
-  export let location // passed by svelte-routing
   export let storyType // passed by svelte-routing
 
-  let items
-  let showLoading = false
+  let items = []
+  let isLoading = false
+  let showLoadingIndicator = false
 
-  afterUpdate(async () => {
-    // TODO figure out best way to load different story types
-    // Probably using a wrapping component that handles the fetching
-    // console.log("update")
-    // if (validStoryType(storyType)) {
-    //   showLoading = true
-    //   await tick()
-    //   items = await API.news()
-    // }
+  const LOADING_INDICATOR_DELAY = 200 // ms
+
+  $: {
+    if (storyType !== $currentStoryType) {
+      isLoading = true
+
+      // show loading indicator if the content is still
+      // loading after 200 ms
+      setTimeout(() => {
+        if (isLoading) {
+          showLoadingIndicator = true
+        }
+      }, LOADING_INDICATOR_DELAY)
+
+      // update store
+      currentStoryType.set(storyType)
+
+      // fetch stories
+      API.stories(storyType)
+        .then((res) => {
+          window.scrollTo(0, 0)
+          items = res
+          isLoading = false
+          showLoadingIndicator = false
+        })
+        .catch((err) => {
+          if (err instanceof InvalidStoryTypeError) {
+            // show 404 error page
+            navigate("/not-found", { replace: true })
+          }
+        })
+    }
+  }
+
+  afterUpdate(() => {
+    showSidebar.set(false)
   })
 
-  onMount(async () => {
-    console.log(location, storyType)
-    showSidebar.set(false)
-    items = await API.news()
+  onDestroy(() => {
+    currentStoryType.set("")
   })
 </script>
 
-<style>
+<svelte:head>
+  <title>{storyType} · Svelte HN</title>
+</svelte:head>
 
-</style>
-
-{#if items && !showLoading}
+{#if items && !showLoadingIndicator}
   <ul class="items">
     {#each items as item, i}
-      <li>
+      <li in:fade={{ duration: 100, delay: 10 * i }}>
         <NewsItem {item} num={i + 1} />
       </li>
     {/each}
   </ul>
 {:else}
-  <LoadingOverlay />
+  <NewsItemsLoading />
 {/if}

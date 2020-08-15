@@ -1,12 +1,19 @@
-// import { news, item } from "./mockApiResponse"
+// import { news, item } from "./mockApiResponse
+import { validStoryType, storyTypeMap } from "./storyTypes"
+import { InvalidStoryTypeError } from "./errors"
 
 const BASE_URL = __ENV_VARS__.API_URL
 
 const API = {
-  async news(page = 1) {
-    const res = await fetch(`${BASE_URL}news?page=${page}`)
-    return await res.json()
-    // return news.JSON
+  async stories(storyType, page = 1) {
+    if (!validStoryType(storyType)) {
+      return Promise.reject(new InvalidStoryTypeError(storyType))
+    } else {
+      const res = await fetch(
+        `${BASE_URL + storyTypeMap[storyType]}?page=${page}`
+      )
+      return await res.json()
+    }
   },
   async item(id) {
     const res = await fetch(`${BASE_URL}item/${id}`)

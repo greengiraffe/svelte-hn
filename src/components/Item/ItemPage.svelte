@@ -9,9 +9,11 @@
   export let id
 
   let item
+  let pageTitle = "loading..."
 
   onMount(async () => {
     item = await API.item(id)
+    pageTitle = item.title
   })
 </script>
 
@@ -38,6 +40,10 @@
     color: var(--color-text--faded);
   }
 </style>
+
+<svelte:head>
+  <title>{pageTitle} · Svelte HN</title>
+</svelte:head>
 
 {#if item}
   <div class="header">
