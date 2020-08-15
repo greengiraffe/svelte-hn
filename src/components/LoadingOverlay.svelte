@@ -25,7 +25,7 @@
   }
 </style>
 
-<div class="loading" out:fade={{ duration: 200 }}>
+<div class="loading" in:fade={{ duration: 50 }} out:fade={{ duration: 150 }}>
   <Icon data={faSpinner} scale={2} spin />
   <p>Loading</p>
 </div>

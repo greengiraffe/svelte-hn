@@ -29,6 +29,7 @@
   }
 
   .item {
+    min-height: 4em;
     display: grid;
     grid-template-areas:
       "side title title"

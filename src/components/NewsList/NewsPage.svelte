@@ -1,32 +1,75 @@
 <script>
-  import { onMount } from "svelte"
-
+  import { afterUpdate, onDestroy } from "svelte"
+  import { fade } from "svelte/transition"
+  import { get } from "svelte/store"
+  import { navigate } from "svelte-routing"
+  import { showSidebar, currentStoryType } from "../../store"
   import API from "../../api"
   import NewsItem from "./NewsItem.svelte"
-  import LoadingOverlay from "../LoadingOverlay.svelte"
+  import NewsItemsLoading from "./NewsItemsLoading.svelte"
+  import { InvalidStoryTypeError } from "../../api/errors"
 
-  // svelte-routing
-  export let location
+  export let storyType // passed by svelte-routing
 
-  let items
+  let items = []
+  let isLoading = false
+  let showLoadingIndicator = false
 
-  onMount(async () => {
-    items = await API.news()
+  const LOADING_INDICATOR_DELAY = 200 // ms
+
+  $: {
+    if (storyType !== $currentStoryType) {
+      isLoading = true
+
+      // show loading indicator if the content is still
+      // loading after 200 ms
+      setTimeout(() => {
+        if (isLoading) {
+          showLoadingIndicator = true
+        }
+      }, LOADING_INDICATOR_DELAY)
+
+      // update store
+      currentStoryType.set(storyType)
+
+      // fetch stories
+      API.stories(storyType)
+        .then((res) => {
+          window.scrollTo(0, 0)
+          items = res
+          isLoading = false
+          showLoadingIndicator = false
+        })
+        .catch((err) => {
+          if (err instanceof InvalidStoryTypeError) {
+            // show 404 error page
+            navigate("/not-found", { replace: true })
+          }
+        })
+    }
+  }
+
+  afterUpdate(() => {
+    showSidebar.set(false)
+  })
+
+  onDestroy(() => {
+    currentStoryType.set("")
   })
 </script>
 
-<style>
+<svelte:head>
+  <title>{storyType} · Svelte HN</title>
+</svelte:head>
 
-</style>
-
-{#if items}
+{#if items && !showLoadingIndicator}
   <ul class="items">
     {#each items as item, i}
-      <li>
+      <li in:fade={{ duration: 100, delay: 10 * i }}>
         <NewsItem {item} num={i + 1} />
       </li>
     {/each}
   </ul>
 {:else}
-  <LoadingOverlay />
+  <NewsItemsLoading />
 {/if}
