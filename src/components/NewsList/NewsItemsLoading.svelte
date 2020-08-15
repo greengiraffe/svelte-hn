@@ -1,5 +1,7 @@
 <script>
   import { fade } from "svelte/transition"
+
+  export let itemCount = 30
 </script>
 
 <style>
@@ -12,7 +14,7 @@
   .wrapper {
     position: absolute;
     z-index: 2;
-    top: 0;
+    top: 3em; /* TitleBar height */
     right: 0;
     bottom: 0;
     left: 0;
@@ -53,7 +55,7 @@
 <!--      -->
 
 <div class="wrapper" in:fade={{ duration: 50 }}>
-  {#each Array(30) as _, i}
+  {#each Array(itemCount) as _, i}
     <div
       class="skeleton"
       style="--delay: {0.1 * i}s;"

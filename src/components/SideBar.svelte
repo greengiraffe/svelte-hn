@@ -9,9 +9,11 @@
     faCertificate,
     faHandPointRight,
     faBriefcase,
+    faBookmark,
   } from "@fortawesome/free-solid-svg-icons"
+  import NavLink from "./NavLink.svelte"
   import { slide } from "../transitions"
-  import { showSidebar, darkMode } from "../store"
+  import { showSidebar, darkMode, savedStoryCount } from "../store"
 
   // disable scrolling when sidebar is shown
   $: document.body.style.overflow = $showSidebar ? "hidden" : "unset"
@@ -20,21 +22,6 @@
   $: $darkMode
     ? document.body.classList.add("dark")
     : document.body.classList.remove("dark")
-
-  // used to pass props from svelte-routing Link component
-  // to the underlying <a> element.
-  // TODO refactor into NavLink component
-  function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
-    const isActive = isCurrent
-
-    // The object returned here is spread on the anchor element's attributes
-    if (isActive) {
-      return { class: "nav-link active" }
-    }
-    return {
-      class: "nav-link",
-    }
-  }
 </script>
 
 <style>
@@ -54,10 +41,10 @@
     justify-content: space-between;
     width: 50vw;
     height: calc(100% - 3em);
+    padding: 1em 0;
     z-index: 3;
     background-color: var(--color-background);
     overflow: hidden;
-    padding: 1em;
     font-size: 1em;
     line-height: 1.7;
   }
@@ -68,28 +55,29 @@
     font-weight: 600;
   }
 
-  :global(nav .nav-link) {
-    color: var(--color-text);
-  }
-
-  :global(nav .nav-link.active) {
-    text-decoration: underline;
-  }
-
   nav div {
+    padding: 0 1em;
     display: grid;
     align-items: center;
     grid-template-columns: 1.5em 1fr;
   }
 
-  .settings {
+  .section {
     margin-top: 1em;
+  }
+
+  .settings {
+    padding: 0 1em;
   }
 
   .settings h3 {
     font-size: 1em;
     line-height: 1.7;
     font-weight: 600;
+  }
+
+  .saved-stories-count {
+    color: var(--color-grey--medium);
   }
 </style>
 
@@ -98,31 +86,40 @@
     <nav>
       <div>
         <Icon data={faStar} />
-        <Link to="/top" {getProps} class="nav-link">Top</Link>
+        <NavLink to="/top">Top</NavLink>
       </div>
       <div>
         <Icon data={faCertificate} />
-        <Link to="/new" {getProps}>New</Link>
+        <NavLink to="/new">New</NavLink>
       </div>
       <div>
         <Icon data={faMedal} />
-        <Link to="/best" {getProps}>Best</Link>
+        <NavLink to="/best">Best</NavLink>
       </div>
       <div>
         <Icon data={faQuestion} />
-        <Link to="/ask" {getProps}>Ask</Link>
+        <NavLink to="/ask">Ask</NavLink>
       </div>
       <div>
         <Icon data={faHandPointRight} />
-        <Link to="/show" {getProps}>Show</Link>
+        <NavLink to="/show">Show</NavLink>
       </div>
       <div>
         <Icon data={faBriefcase} />
-        <Link to="/jobs" {getProps}>Jobs</Link>
+        <NavLink to="/jobs">Jobs</NavLink>
+      </div>
+
+      <div class="section user">
+        <Icon data={faBookmark} />
+        <NavLink to="/saved">
+          Saved Stories
+          <span class="saved-stories-count">({$savedStoryCount})</span>
+        </NavLink>
+
       </div>
     </nav>
 
-    <div class="settings">
+    <div class="section settings">
       <h3>Settings</h3>
       <label>
         <input
@@ -139,7 +136,7 @@
   </div>
   <div
     transition:fade
-    class={'fade-background'}
+    class="fade-background"
     on:click={() => {
       showSidebar.set(false)
     }}
