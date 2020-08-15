@@ -4,9 +4,12 @@
     faBriefcase,
     faComment,
     // faBurn,
-    faBookmark,
+    faBookmark as faBookmarkSolid,
   } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-routing"
+  import { onMount, beforeUpdate } from "svelte"
+  import { get } from "svelte/store"
+  import { savedStories, saveStory, removeSavedStory } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
 
   export let item
@@ -14,7 +17,21 @@
 
   let liked = false
 
+  beforeUpdate(() => {
+    // mark saved stories
+    liked = get(savedStories).some((story) => story.id === item.id)
+  })
+
+  onMount(() => {
+    console.log("onMount")
+  })
+
   function like() {
+    if (liked) {
+      removeSavedStory(item)
+    } else {
+      saveStory(item)
+    }
     liked = !liked
   }
 </script>
@@ -32,10 +49,10 @@
     min-height: 4em;
     display: grid;
     grid-template-areas:
-      "side title title"
+      "side title comments"
       "side url comments"
       "side meta comments";
-    grid-template-columns: 3em 1fr 6em;
+    grid-template-columns: 3em 1fr 5em;
     grid-template-rows: auto;
     grid-gap: 0 0.5em;
     border-top: 1px solid var(--color-newsitem-border);
@@ -47,16 +64,21 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     background-color: var(--color-newsitem-bg-side);
     width: 100%;
     font-size: 0.8em;
     padding: 0.25em 0.5em;
   }
 
+  :global(.side:hover .bookmark-icon:not(.liked)) {
+    opacity: 0.4;
+  }
+
   .num {
     font-weight: 700;
-    color: var(--color-text--faded);
+    color: var(--color-text);
     line-height: 1.2em;
   }
 
@@ -67,6 +89,7 @@
   }
 
   .points {
+    color: var(--color-text--faded);
   }
 
   .title {
@@ -86,12 +109,11 @@
 
   .comments {
     grid-area: comments;
-    justify-self: end;
-    align-self: end;
-    padding: 0.25em 0.5em;
-    margin: 0.25em;
+    justify-self: center;
+    align-self: center;
+    padding: 0.5em;
     font-size: 0.8em;
-    border: 1px solid var(--color-newsitem-border);
+    /* border: 1px solid var(--color-newsitem-border); */
     border-radius: 5px;
   }
 
@@ -110,6 +132,11 @@
     height: 100%;
   }
 
+  .bookmark-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
   :global(.comments-icon) {
     vertical-align: sub;
     margin-left: 5px;
@@ -119,12 +146,12 @@
     position: absolute;
     right: 0;
     top: -1px;
-    fill: var(--color-bookmark-icon) !important;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, fill 0.2s ease;
   }
 
   :global(.bookmark-icon.liked) {
+    fill: var(--color-bookmark-icon) !important;
     opacity: 1;
   }
 
@@ -136,8 +163,12 @@
 
 <SwipeToAction on:action-right={like} on:action-left={like}>
   <div class="item" slot="content">
-    <div class="side">
-      <Icon data={faBookmark} class="bookmark-icon {liked ? 'liked' : ''}" />
+    <div class="side" on:click={like}>
+      <Icon
+        data={faBookmarkSolid}
+        class="bookmark-icon {liked ? 'liked' : ''}"
+        on:click={like}
+      />
       <div class="num">{num}</div>
       {#if item.points}
         <div class="points">{item.points}p</div>

@@ -57,3 +57,11 @@ a {
     color: var(--color-link--visited);
   }
 }
+
+input {
+  color: var(--color-text);
+}
+
+input::placeholder {
+  color: var(--color-text--faded);
+}
