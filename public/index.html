@@ -26,5 +26,57 @@
     <script defer src="/build/bundle.js"></script>
   </head>
 
-  <body></body>
+  <style>
+    noscript div {
+      padding: 2em;
+      max-width: 40em;
+    }
+
+    noscript p {
+      padding: 0 0.5em;
+    }
+
+    noscript h1 {
+      padding: 0 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    noscript small {
+      font-size: 1rem;
+    }
+
+    noscript .important {
+      padding: 0.5em;
+      background: #eee;
+    }
+
+    noscript hr {
+      margin: 1em 0.5em;
+      color: #eee;
+    }
+  </style>
+  <body>
+    <noscript>
+      <div>
+        <h1>Sorry! <small>...but hear me out</small></h1>
+        <hr>
+        <p>
+          <b>This page does not work without JavaScript.</b> It's a Single-Page-Application created using the <a href="https://svelte.dev/">Svelte</a> framework that I wanted to learn.
+        </p>
+        <p class="important">
+          There are no third-party resources, no cookies, nor any other tracking mechanics on this page. <a href="https://github.com/greengiraffe/svelte-hn">It is open source</a>. It uses an open-source <a href="https://github.com/greengiraffe/node-hnapi">self-hosted (unofficial) Hacker News API</a> as a backend.
+        </p>
+        <p>
+          What you would see is an unofficial, read-only <a href="https://news.ycombinator.com/">Hacker News</a> client that works offline, can be installed as a Progressive Web App and allows you to persistently bookmark stories on your device without having a Hacker News account.
+        </p>
+        <p>
+          If you are curious about what I built, feel free to enable JavaScript and reload this page. If you just want to read some Hacker News without JS, <a href="https://news.ycombinator.com/">visit the official page</a>. I respect your choice! :-)
+        </p>
+        <hr>
+        <p>Contact me at greengiraffe {ät} posteo {.de} if you have questions or feedback!</p>
+      </div>
+    </noscript>
+      
+
+  </body>
 </html>
