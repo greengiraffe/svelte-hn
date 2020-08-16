@@ -1,13 +1,11 @@
 <script>
   import { afterUpdate, onDestroy } from "svelte"
-  import { fade } from "svelte/transition"
-  import { get } from "svelte/store"
   import { navigate } from "svelte-routing"
   import { showSidebar, currentStoryType } from "../../store"
   import API from "../../api"
-  import NewsItem from "./NewsItem.svelte"
   import NewsItemsLoading from "./NewsItemsLoading.svelte"
   import { InvalidStoryTypeError } from "../../api/errors"
+  import NewsItemList from "./NewsItemList.svelte"
 
   export let storyType // passed by svelte-routing
 
@@ -63,13 +61,7 @@
 </svelte:head>
 
 {#if items && !showLoadingIndicator}
-  <ul class="items">
-    {#each items as item, i}
-      <li in:fade={{ duration: 100, delay: 10 * i }}>
-        <NewsItem {item} num={i + 1} />
-      </li>
-    {/each}
-  </ul>
+  <NewsItemList {items} />
 {:else}
   <NewsItemsLoading />
 {/if}
