@@ -4,6 +4,7 @@ import resolve from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
 import commonjs from "@rollup/plugin-commonjs"
 import livereload from "rollup-plugin-livereload"
+import del from "rollup-plugin-delete"
 import { terser } from "rollup-plugin-terser"
 import { config } from "dotenv"
 import { generateSW } from "rollup-plugin-workbox"
@@ -47,6 +48,7 @@ export default {
       browser: true,
       dedupe: ["svelte"],
     }),
+
     commonjs(),
 
     // In dev mode, call `npm run start` once
@@ -75,6 +77,13 @@ export default {
             handler: "CacheFirst",
           },
         ],
+      }),
+
+    // make sure the service-worker is removed when developing to
+    // avoid running into caching issues when live-reloading is active
+    !production &&
+      del({
+        targets: "public/service-worker.js",
       }),
 
     // Process environment variables
