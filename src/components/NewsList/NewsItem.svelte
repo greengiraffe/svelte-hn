@@ -7,7 +7,7 @@
     faBookmark as faBookmarkSolid,
   } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-routing"
-  import { onMount, beforeUpdate } from "svelte"
+  import { beforeUpdate } from "svelte"
   import { get } from "svelte/store"
   import { savedStories, saveStory, removeSavedStory } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
@@ -20,10 +20,6 @@
   beforeUpdate(() => {
     // mark saved stories
     liked = get(savedStories).some((story) => story.id === item.id)
-  })
-
-  onMount(() => {
-    console.log("onMount")
   })
 
   function like() {
