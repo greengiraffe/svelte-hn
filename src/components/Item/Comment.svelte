@@ -9,6 +9,8 @@
 
   const dispatch = createEventDispatcher()
 
+  const fullDate = new Date(comment.time * 1000).toLocaleString()
+
   const hue = (comment.level * 70 + 204) % 360 // rainbow
   const color = `${hue}, 50%, 50%`
   const commentCount = comment.comments.length
@@ -25,7 +27,7 @@
 <style>
   .comment {
     --current-color: 128, 128, 128; /* set by JS, for indentation styles */
-    padding: 0.5em;
+    padding: 1em;
     background-color: var(--color-background);
     border-left: 0.25rem solid;
     font-size: var(--font-size-s);
@@ -82,7 +84,7 @@
 >
   <div class="header">
     <h3>{comment.user}</h3>
-    <span>{comment.time_ago}</span>
+    <span title={fullDate}>{comment.time_ago}</span>
   </div>
   <div class="content">
     {@html comment.content}

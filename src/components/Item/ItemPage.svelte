@@ -19,7 +19,7 @@
 
 <style>
   .header {
-    padding: 0.5em;
+    padding: 1em;
     background: var(--color-commentpage-bg-header);
   }
 
@@ -50,14 +50,10 @@
     <h2 class="title">
       <a href={item.url}>{item.title}</a>
     </h2>
-    <div class="url">
-      <span>{item.domain}</span>
-    </div>
+    <div class="url">{item.domain}</div>
     <div class="meta">
-      <span>
-        posted {item.time_ago} by {item.user} · {item.points} points · {item.comments_count}
-        comments
-      </span>
+      posted {item.time_ago} by {item.user} · {item.points} points · {item.comments_count}
+      comments
     </div>
   </div>
 
