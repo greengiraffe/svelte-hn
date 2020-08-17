@@ -1,10 +1,11 @@
-import { get } from "idb-keyval"
 import { writable, derived } from "svelte/store"
 
 // Random stores
 export const showSidebar = writable(false)
 export const darkMode = writable(false)
 export const currentStoryType = writable("")
+
+export const newsItems = writable([])
 
 // Saved stories
 export const savedStories = writable([])

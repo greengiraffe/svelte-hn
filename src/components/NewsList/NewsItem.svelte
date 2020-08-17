@@ -2,9 +2,9 @@
   import Icon from "svelte-awesome"
   import {
     faBriefcase,
-    faComment,
+    faComments,
     // faBurn,
-    faBookmark as faBookmarkSolid,
+    faBookmark,
   } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-routing"
   import { beforeUpdate } from "svelte"
@@ -22,7 +22,8 @@
     liked = get(savedStories).some((story) => story.id === item.id)
   })
 
-  function like() {
+  function like(event) {
+    if (event.type === "keydown" && event.code !== "Enter") return
     if (liked) {
       removeSavedStory(item)
     } else {
@@ -65,10 +66,11 @@
     background-color: var(--color-newsitem-bg-side);
     width: 100%;
     font-size: 0.8em;
-    padding: 0.25em 0.5em;
+    padding: 0.5em 0.5em;
   }
 
-  :global(.side:hover .bookmark-icon:not(.liked)) {
+  :global(.side:hover .bookmark-icon:not(.liked), .side:focus
+      .bookmark-icon:not(.liked)) {
     opacity: 0.4;
   }
 
@@ -84,6 +86,10 @@
     color: var(--color-text--faded);
   }
 
+  .no-url {
+    color: var(--color-grey--light);
+  }
+
   .points {
     color: var(--color-text--faded);
   }
@@ -93,14 +99,14 @@
     font-size: 1em;
     line-height: 1.2;
     font-weight: 600;
-    padding: 0.25em 0.5em 0 0;
+    padding: 0.5em 0.5em 0 0;
   }
 
   .meta {
     grid-area: meta;
     font-size: 0.8em;
     color: var(--color-text--faded);
-    padding-bottom: 0.25em;
+    padding-bottom: 0.5em;
   }
 
   .comments {
@@ -113,7 +119,8 @@
     border-radius: 5px;
   }
 
-  .comments:hover {
+  .comments:hover,
+  .comments:focus {
     text-decoration: none;
     background-color: var(--color-newsitem-comments-hover);
   }
@@ -125,11 +132,6 @@
     justify-content: center;
     color: var(--color-background);
     padding: 0 1em;
-    height: 100%;
-  }
-
-  .bookmark-wrapper {
-    width: 100%;
     height: 100%;
   }
 
@@ -159,9 +161,31 @@
 
 <SwipeToAction on:action-right={like} on:action-left={like}>
   <div class="item" slot="content">
-    <div class="side" on:click={like}>
+    <h2 class="title">
+      <a href={item.url}>{item.title}</a>
+    </h2>
+    <div class="meta">
+      <span>{item.time_ago}</span>
+      {#if item.user}
+        <span>by {item.user}</span>
+      {/if}
+    </div>
+    <div class="url">
+      {#if item.domain}
+        <span>{item.domain}</span>
+      {:else}
+        <span aria-hidden class="no-url">——</span>
+      {/if}
+    </div>
+    <div
+      class="side"
+      on:click={like}
+      on:keydown={like}
+      tabindex="0"
+      aria-label={liked ? 'remove bookmark' : 'bookmark'}
+    >
       <Icon
-        data={faBookmarkSolid}
+        data={faBookmark}
         class="bookmark-icon {liked ? 'liked' : ''}"
         on:click={like}
       />
@@ -173,27 +197,15 @@
         <Icon data={faBriefcase} class="briefcase-icon" />
       {/if}
     </div>
-    <h2 class="title">
-      <a href={item.url}>{item.title}</a>
-    </h2>
-    <div class="meta">
-      <span>{item.time_ago}</span>
-      {#if item.user}
-        <span>by {item.user}</span>
-      {/if}
-    </div>
-    <div class="url">
-      <span>{item.domain}</span>
-    </div>
     <a class="comments" href={`/item/${item.id}`} use:link>
       {item.comments_count}
-      <Icon data={faComment} class="comments-icon" />
+      <Icon data={faComments} class="comments-icon" />
     </a>
   </div>
-  <div slot="action-right" class="action right" class:liked>
+  <div slot="action-right" class="action right" class:liked aria-hidden="true">
     {#if liked}Unlike{:else}Like{/if}
   </div>
-  <div slot="action-left" class="action left" class:liked>
+  <div slot="action-left" class="action left" class:liked aria-hidden="true">
     {#if liked}Unlike{:else}Like{/if}
   </div>
 </SwipeToAction>

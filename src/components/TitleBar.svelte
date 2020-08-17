@@ -3,6 +3,15 @@
   import { currentStoryType } from "../store"
   import { faBars } from "@fortawesome/free-solid-svg-icons"
   import { showSidebar } from "../store"
+  import { validStoryType } from "../api/storyTypes"
+  import { beforeUpdate } from "svelte"
+
+  let isNewsList = true
+
+  beforeUpdate(() => {
+    const path = location.pathname.slice(1, location.pathname.length)
+    isNewsList = path.length === 0 || validStoryType(path)
+  })
 </script>
 
 <style>
@@ -32,6 +41,13 @@
     text-align: center;
     display: flex;
     align-items: center;
+    border-radius: 0;
+  }
+
+  .menu:hover,
+  .menu:focus,
+  .menu:active {
+    background-color: var(--color-accent);
   }
 
   :global(.menu-icon) {
@@ -52,6 +68,6 @@
   </button>
   <h1>
     Hacker News
-    {#if $currentStoryType}· {$currentStoryType}{/if}
+    {#if isNewsList && $currentStoryType}· {$currentStoryType}{/if}
   </h1>
 </header>
