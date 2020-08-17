@@ -10,8 +10,8 @@ body {
   font-size: 1em;
   line-height: 1.4;
   letter-spacing: -0.003em;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background-color: var(--c-background);
+  color: var(--c-text--primary);
 }
 
 button {
@@ -25,39 +25,40 @@ button {
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--color-grey--light);
+    background-color: var(--c-button-bg);
   }
 }
 
 pre {
   overflow: auto;
   padding: 0.5em;
-  background: var(--color-grey--light);
+  background: var(--c-code-bg);
 }
 
 code {
-  background: var(--color-grey--light);
+  background: var(--c-code-bg);
 }
 
 a {
   word-wrap: break-word;
-  color: var(--color-link);
+  color: var(--c-link);
   text-decoration: none;
 
   &:hover,
   &:focus {
+    color: var(--c-link--hover);
     text-decoration: underline;
   }
 
   &:visited {
-    color: var(--color-link--visited);
+    color: var(--c-link--visited);
   }
 }
 
 input {
-  color: var(--color-text);
+  color: var(--c-text--primary);
 }
 
 input::placeholder {
-  color: var(--color-text--faded);
+  color: var(--c-text--secondary);
 }

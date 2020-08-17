@@ -20,7 +20,7 @@
 <style>
   .header {
     padding: 1em;
-    background: var(--color-commentpage-bg-header);
+    background: var(--c-itempage-header-bg);
   }
 
   .title {
@@ -29,15 +29,15 @@
   }
 
   .title a:visited {
-    color: var(--color-title);
+    color: var(--c-itempage-header-link--visited);
   }
 
   .url {
-    color: var(--color-text--faded);
+    color: var(--c-itempage-url);
   }
 
   .meta {
-    color: var(--color-text--faded);
+    color: var(--c-itempage-meta);
   }
 </style>
 

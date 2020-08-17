@@ -13,7 +13,7 @@
   import SwipeToAction from "../SwipeToAction.svelte"
 
   export let item
-  export let num
+  export let rank
 
   let liked = false
 
@@ -35,11 +35,16 @@
 
 <style>
   a {
-    color: var(--color-title);
+    color: var(--c-newsitem-title);
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--c-newsitem-title--hover);
   }
 
   a:visited {
-    color: var(--color-title--faded);
+    color: var(--c-newsitem-title--visited);
   }
 
   .item {
@@ -52,8 +57,8 @@
     grid-template-columns: 3em 1fr 5em;
     grid-template-rows: auto;
     grid-gap: 0 0.5em;
-    border-top: 1px solid var(--color-newsitem-border);
-    background-color: var(--color-background);
+    border-top: 1px solid var(--c-newsitem-border);
+    background-color: var(--c-newsitem-bg);
   }
 
   .side {
@@ -63,7 +68,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--color-newsitem-bg-side);
+    background-color: var(--c-newsitem-side-bg);
     width: 100%;
     font-size: 0.8em;
     padding: 0.5em 0.5em;
@@ -74,24 +79,24 @@
     opacity: 0.4;
   }
 
-  .num {
+  .rank {
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--c-newsitem-rank);
     line-height: 1.2em;
   }
 
   .url {
     grid-area: url;
     font-size: 0.8em;
-    color: var(--color-text--faded);
+    color: var(--c-newsitem-url);
   }
 
   .no-url {
-    color: var(--color-grey--light);
+    color: var(--c-newsitem-no-url);
   }
 
   .points {
-    color: var(--color-text--faded);
+    color: var(--c-newsitem-points);
   }
 
   .title {
@@ -105,7 +110,7 @@
   .meta {
     grid-area: meta;
     font-size: 0.8em;
-    color: var(--color-text--faded);
+    color: var(--c-newsitem-meta);
     padding-bottom: 0.5em;
   }
 
@@ -115,22 +120,21 @@
     align-self: center;
     padding: 0.5em;
     font-size: 0.8em;
-    /* border: 1px solid var(--color-newsitem-border); */
     border-radius: 5px;
   }
 
   .comments:hover,
   .comments:focus {
     text-decoration: none;
-    background-color: var(--color-newsitem-comments-hover);
+    background-color: var(--c-newsitem-comments-bg--hover);
   }
 
   .action {
-    background-color: var(--color-newsitem-bg-action);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: var(--color-background);
+    color: var(--c-newsitem-swipetoaction-text);
+    background-color: var(--c-newsitems-swiptetoaction-bg);
     padding: 0 1em;
     height: 100%;
   }
@@ -149,12 +153,12 @@
   }
 
   :global(.bookmark-icon.liked) {
-    fill: var(--color-bookmark-icon) !important;
+    fill: var(--c-newsitem-bookmark) !important;
     opacity: 1;
   }
 
   :global(.briefcase-icon) {
-    fill: var(--color-newsitem-icon) !important;
+    fill: var(--c-newsitem-job-icon) !important;
     margin-bottom: 0.2em;
   }
 </style>
@@ -189,7 +193,9 @@
         class="bookmark-icon {liked ? 'liked' : ''}"
         on:click={like}
       />
-      <div class="num">{num}</div>
+      {#if rank}
+        <div class="rank">{rank}</div>
+      {/if}
       {#if item.points}
         <div class="points">{item.points}p</div>
       {/if}

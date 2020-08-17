@@ -17,7 +17,7 @@
 <style>
   header {
     display: flex;
-    background-color: var(--color-appheader-background);
+    background-color: var(--c-titlebar-bg);
     position: fixed;
     width: 100%;
     height: 3em;
@@ -27,7 +27,7 @@
   }
 
   h1 {
-    color: var(--color-appheader-text);
+    color: var(--c-titlebar-text);
     display: inline;
     font-size: 1em;
     line-height: 2;
@@ -47,13 +47,13 @@
   .menu:hover,
   .menu:focus,
   .menu:active {
-    background-color: var(--color-accent);
+    background-color: var(--c-titlebar-icon-bg--hover);
   }
 
   :global(.menu-icon) {
     vertical-align: top;
     margin: 0 auto;
-    fill: var(--color-appheader-text) !important;
+    fill: var(--c-titlebar-icon) !important;
   }
 </style>
 

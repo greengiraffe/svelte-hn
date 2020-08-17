@@ -103,7 +103,7 @@
   }
 
   .more-button {
-    background: var(--color-accent);
+    background: var(--c-button-bg);
   }
 
   .up-button {
@@ -116,7 +116,7 @@
   }
 
   :global(.up-button:hover .up-button-icon, .up-button:focus .up-button-icon) {
-    fill: var(--color-accent);
+    fill: var(--c-button-bg--hover);
   }
 
   .up-button:hover,

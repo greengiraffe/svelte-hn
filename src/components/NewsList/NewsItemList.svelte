@@ -11,7 +11,7 @@
   {#each items as item, i}
     <li in:fade={{ duration: 200, delay: delayTransition ? 10 * i : 0 }}>
       {#if item}
-        <NewsItem {item} num={i + 1} />
+        <NewsItem {item} rank={i + 1} />
       {:else}
         <NewsItemSkeleton />
       {/if}

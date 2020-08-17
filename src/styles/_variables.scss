@@ -1,58 +1,143 @@
+@use "sass:map";
+
+// Ground truth color palette. Do not use colors other than
+// the ones defined here. Carefully consider introducing
+// new colors.
+$palette: (
+  "background": (
+    "light": hsl(0, 0%, 100%),
+    "dark": hsl(0, 0%, 10%),
+  ),
+  "backgroundOffset": (
+    "light": hsl(0, 0%, 93%),
+    "dark": hsl(0, 0%, 19%),
+  ),
+  "textPrimary": (
+    "light": hsl(0, 0%, 13%),
+    "dark": hsl(0, 0%, 96%),
+  ),
+  "textSecondary": (
+    "light": hsl(0, 0%, 40%),
+    "dark": hsl(0, 0%, 86%),
+  ),
+  "link": (
+    "light": hsl(204, 81%, 30%),
+    "dark": hsl(204, 61%, 60%),
+  ),
+  "linkHover": (
+    "light": hsl(204, 81%, 40%),
+    "dark": hsl(204, 61%, 70%),
+  ),
+  "linkVisited": (
+    "light": hsl(204, 31%, 60%),
+    "dark": hsl(204, 31%, 43%),
+  ),
+  "accent": (
+    "light": hsl(204, 81%, 45%),
+    "dark": hsl(204, 81%, 45%),
+  ),
+  "darkBlue": (
+    "light": hsl(204, 80%, 30%),
+    "dark": hsl(204, 80%, 30%),
+  ),
+  "orange": (
+    "light": hsl(19, 93%, 57%),
+    "dark": hsl(19, 93%, 57%),
+  ),
+  "white": (
+    "light": hsl(0, 0%, 100%),
+    "dark": hsl(0, 0%, 100%),
+  ),
+  "overlay": (
+    "light": hsla(0, 0%, 0%, 0.5),
+    "dark": hsla(0, 0%, 0%, 0.5),
+  ),
+  "mediumGrey": (
+    "light": hsl(0, 0%, 53%),
+    "dark": hsl(0, 0%, 53%),
+  ),
+);
+
+@function color($key, $mode: "light") {
+  @return map.get(map.get($palette, $key), $mode);
+}
+
+// Applied palette. Defines some general colors and
+// some component-specific colors as CSS variables
+// based on the given $mode (dark/light). Makes use of the
+// ground-truth color palette and the sass functions
+// defined above.
+@mixin colors($mode: "light") {
+  // General colors
+  --c-background: #{color("background", $mode)}; /* General */
+  --c-text--primary: #{color("textPrimary", $mode)};
+  --c-text--secondary: #{color("textSecondary", $mode)};
+  --c-link: #{color("link", $mode)};
+  --c-link--hover: #{color("linkHover", $mode)};
+  --c-link--visited: #{color("linkVisited", $mode)};
+  --c-code-bg: #{color("backgroundOffset", $mode)};
+  --c-button-text: #{color("textPrimary", $mode)};
+  --c-button-bg: #{color("backgroundOffset", $mode)};
+  --c-button-bg--hover: #{color("accent", $mode)};
+  --c-button-text--hover: #{color("white", $mode)};
+
+  // Titlebar colors
+  --c-titlebar-bg: #{color("darkBlue", $mode)}; /* TitleBar */
+  --c-titlebar-text: #{color("white", $mode)};
+  --c-titlebar-icon: #{color("white", $mode)};
+  --c-titlebar-icon-bg: #{color("darkBlue", $mode)};
+  --c-titlebar-icon-bg--hover: #{color("accent", $mode)};
+
+  // Sidebar colors
+  --c-sidebar-bg: #{color("background", $mode)}; /* SideBar */
+  --c-sidebar-link: #{color("textPrimary", $mode)};
+  --c-sidebar-link--hover: #{color("textPrimary", $mode)};
+  --c-sidebar-icon: #{color("textPrimary", $mode)};
+  --c-sidebar-icon--hover: #{color("textPrimary", $mode)};
+  --c-sidebar-overlay: #{color("overlay", $mode)};
+
+  // Newsitem colors
+  --c-newsitem-bg: #{color("background", $mode)};
+  --c-newsitem-side-bg: #{color("backgroundOffset", $mode)}; /* NewsItem */
+  --c-newsitem-bookmark: #{color("orange", $mode)};
+  --c-newsitem-bookmark--hover: #{color("orange", $mode)}; // TODO
+  --c-newsitem-bookmark--active: #{color("orange", $mode)};
+  --c-newsitem-swipetoaction-text: #{color("textPrimary", $mode)};
+  --c-newsitem-swipetoaction-bg: #{color("orange", $mode)};
+  --c-newsitem-rank: #{color("textPrimary", $mode)};
+  --c-newsitem-points: #{color("textSecondary", $mode)};
+  --c-newsitem-border: #{color("backgroundOffset", $mode)};
+  --c-newsitem-job-icon: #{color("mediumGrey", $mode)};
+  --c-newsitem-title: #{color("link", $mode)};
+  --c-newsitem-title--hover: #{color("linkHover", $mode)};
+  --c-newsitem-title--visited: #{color("linkVisited", $mode)};
+  --c-newsitem-url: #{color("textSecondary", $mode)};
+  --c-newsitem-no-url: #{color("textSecondary", $mode)};
+  --c-newsitem-meta: #{color("textSecondary", $mode)};
+  --c-newsitem-comments-bg: #{color("background", $mode)};
+  --c-newsitem-comments-bg--hover: #{color("backgroundOffset", $mode)};
+  --c-newsitem-comments: #{color("link", $mode)};
+  --c-newsitem-comments--hover: #{color("linkHover", $mode)};
+  --c-newsitem-comments--visited: #{color("linkVisited", $mode)};
+
+  // Itempage colors
+  --c-itempage-header-bg: #{color("backgroundOffset", $mode)}; /* ItemPage */
+  --c-itempage-header-link--visited: #{color("link", $mode)};
+  --c-itempage-url: #{color("textSecondary", $mode)};
+  --c-itempage-meta: #{color("textSecondary", $mode)};
+
+  // Comment colors
+  // Note: author colors are defined via JS
+  --c-comment-bg: #{color("background", $mode)};
+  --c-comment-header: #{color("textSecondary", $mode)};
+  --c-comment-footer: #{color("textSecondary", $mode)};
+}
+
+// Use the CSS color variables, default to light mode
 :root {
-  --color-background: hsl(0, 0%, 100%);
-  --color-text: hsl(0, 0%, 13%);
-  --color-text--faded: hsl(0, 0%, 40%);
-  --color-accent: hsl(204, 81%, 45%);
-  --color-appheader-text: hsl(0, 0%, 100%);
-  --color-appheader-background: hsl(204, 81%, 30%);
-  --color-title: hsl(204, 81%, 30%);
-  --color-title--faded: hsl(204, 10%, 60%);
-  --color-action-background: hsl(204, 81%, 30%);
-  --color-action-text: hsl(0, 0%, 100%);
-  --color-overlay: hsla(0, 0%, 0%, 0.5);
-
-  --color-link: hsl(204, 81%, 30%);
-  --color-link--visited: hsl(204, 10%, 60%);
-
-  --color-grey--light: hsl(0, 0%, 93%);
-  --color-grey--medium: hsl(0, 0%, 53%);
-
-  --color-commentpage-bg-header: var(--color-grey--light);
-
-  --color-bookmark-icon: hsl(19, 93%, 57%);
-
-  --color-newsitem-bg-action: hsl(19, 93%, 57%);
-  --color-newsitem-bg-side: var(--color-grey--light);
-  --color-newsitem-border: var(--color-grey--light);
-  --color-newsitem-comments-hover: var(--color-grey--light);
-  --color-newsitem-icon: var(--color-grey--medium);
+  @include colors("light");
 }
 
 .dark {
-  --color-background: hsl(0, 0%, 10%);
-  --color-text: hsl(0, 0%, 96%);
-  --color-text--faded: hsl(0, 0%, 86%);
-  --color-accent: hsl(204, 81%, 45%);
-  --color-appheader-text: hsl(0, 0%, 100%);
-  --color-appheader-background: hsl(204, 81%, 20%);
-  --color-title: hsl(204, 81%, 70%);
-  --color-title--faded: hsl(204, 20%, 50%);
-  --color-action-background: hsl(204, 81%, 30%);
-  --color-action-text: hsl(0, 0%, 100%);
-  --color-overlay: hsla(0, 0%, 0%, 0.5);
-
-  --color-commentpage-bg-header: hsl(0, 0%, 20%);
-
-  --color-grey--light: hsl(0, 0%, 93%);
-  --color-grey--medium: hsl(0, 0%, 73%);
-
-  --color-newsitem-bg-side: hsl(0, 0%, 20%);
-  --color-newsitem-border: hsl(0, 0%, 25%);
-  --color-newsitem-comments-hover: hsl(0, 0%, 25%);
-  --color-newsitem-icon: hsl(0, 0%, 40%);
-}
-
-@mixin font-normal {
-  font-size: 13px;
-  line-height: 18px;
+  @include colors("dark");
 }

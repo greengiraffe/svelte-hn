@@ -12,7 +12,7 @@
     justify-content: center;
     height: 100%;
     z-index: 2;
-    background-color: var(--color-background);
+    background-color: var(--c-background);
     position: absolute;
     top: 0;
     right: 0;

@@ -28,9 +28,9 @@
   .comment {
     --current-color: 128, 128, 128; /* set by JS, for indentation styles */
     padding: 1em;
-    background-color: var(--color-background);
+    background-color: var(--c-comment-bg);
     border-left: 0.25rem solid;
-    font-size: var(--font-size-s);
+    font-size: 1em;
     border-color: hsl(var(--current-color));
     border-top: 1px solid hsla(var(--current-color), 0.3);
   }
@@ -42,7 +42,7 @@
   .header {
     display: flex;
     justify-content: space-between;
-    color: var(--color-text--faded);
+    color: var(--c-comment-header);
     line-height: 1.2;
     margin-bottom: 1em;
   }
@@ -63,7 +63,7 @@
   }
 
   .footer {
-    color: var(--color-text--faded);
+    color: var(--c-comment-footer);
   }
 
   .reply-toggle-symbol {

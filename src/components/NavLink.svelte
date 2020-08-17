@@ -20,10 +20,11 @@
 
 <style>
   :global(.nav-link, .nav-link:visited) {
-    color: var(--color-text);
+    color: var(--c-sidebar-link);
   }
 
   :global(.nav-link.active) {
+    color: var(--c-sidebar-link--hover);
     text-decoration: underline;
   }
 </style>

@@ -30,7 +30,7 @@
     height: 100%;
     z-index: 2;
     transition: opacity 0.3s ease-in;
-    background-color: var(--color-overlay);
+    background-color: var(--c-sidebar-overlay);
   }
 
   .sidebar {
@@ -42,7 +42,7 @@
     height: calc(100% - 3em);
     padding: 1em 0;
     z-index: 3;
-    background-color: var(--color-background);
+    background-color: var(--c-sidebar-bg);
     overflow: hidden;
     font-size: 1em;
     line-height: 1.7;
@@ -76,7 +76,7 @@
   }
 
   .saved-stories-count {
-    color: var(--color-grey--medium);
+    color: var(--c-text--secondary);
   }
 </style>
 

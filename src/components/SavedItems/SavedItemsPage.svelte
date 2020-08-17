@@ -42,7 +42,7 @@
   .search-input {
     padding: 0.5em;
     border: 0;
-    background-color: var(--color-background);
+    background-color: var(--c-background);
   }
 </style>
 
