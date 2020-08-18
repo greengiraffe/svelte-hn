@@ -1,6 +1,6 @@
 <script>
   import { afterUpdate } from "svelte"
-  import { navigate } from "svelte-routing"
+  import { navigate } from "svelte-navigator"
   import Icon from "svelte-awesome"
   import { newsItems, showSidebar, currentStoryType } from "../../store"
   import API from "../../api"
@@ -9,7 +9,7 @@
   import NewsItemList from "./NewsItemList.svelte"
   import { faArrowUp } from "@fortawesome/free-solid-svg-icons"
 
-  export let storyType // passed by svelte-routing
+  export let storyType // passed by svelte-navigator from App.svelte
 
   let isLoading = false
   let showLoadingIndicator = false

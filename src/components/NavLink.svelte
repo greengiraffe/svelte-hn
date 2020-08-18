@@ -1,11 +1,10 @@
 <script>
-  import { Link } from "svelte-routing"
+  import { Link } from "svelte-navigator"
 
   export let to
   export let classNames = []
-  export let activeClass = "active"
 
-  // used to pass props from svelte-routing Link component
+  // used to pass props from svelte-navigator Link component
   // to the underlying <a> element.
   function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
     const classes = "nav-link " + classNames.join(" ")

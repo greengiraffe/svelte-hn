@@ -6,7 +6,7 @@
     // faBurn,
     faBookmark,
   } from "@fortawesome/free-solid-svg-icons"
-  import { link } from "svelte-routing"
+  import { link } from "svelte-navigator"
   import { beforeUpdate } from "svelte"
   import { get } from "svelte/store"
   import { savedStories, saveStory, removeSavedStory } from "../../store"

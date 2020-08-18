@@ -4,7 +4,7 @@
   import CommentTree from "./CommentTree.svelte"
   import LoadingOverlay from "../LoadingOverlay.svelte"
 
-  // svelte-routing
+  // svelte-navigator
   export let location
   export let id
 

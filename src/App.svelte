@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
   import { get, set } from "idb-keyval"
-  import { Router, Route } from "svelte-routing"
+  import { Router, Route } from "svelte-navigator"
   export let url = ""
 
   import TitleBar from "./components/TitleBar.svelte"
