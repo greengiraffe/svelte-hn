@@ -43,7 +43,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 50vw;
+    width: 100%;
+    min-width: 15em;
+    max-width: 20vw;
     height: calc(100% - 3em);
     padding: 1em 0;
     z-index: 3;
