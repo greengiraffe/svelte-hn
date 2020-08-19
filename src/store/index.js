@@ -5,6 +5,9 @@ export const showSidebar = writable(false)
 export const darkMode = writable(false)
 export const currentStoryType = writable("")
 
+export const selectedStory = writable({})
+
+// Required to cache multiple pages of newsItems
 export const newsItems = writable([])
 
 // Saved stories

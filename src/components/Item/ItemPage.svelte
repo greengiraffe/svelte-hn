@@ -1,35 +1,100 @@
 <script>
-  import { onMount } from "svelte"
+  import { onMount, onDestroy, tick, beforeUpdate } from "svelte"
+  import { fade } from "svelte/transition"
+  import Icon from "svelte-awesome"
+  import { faBookmark } from "@fortawesome/free-solid-svg-icons"
+  import {
+    selectedStory,
+    savedStories,
+    saveStory,
+    removeSavedStory,
+  } from "../../store"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
-  import LoadingOverlay from "../LoadingOverlay.svelte"
+  import CommentTreeLoading from "./CommentTreeLoading.svelte"
 
-  // svelte-navigator
-  export let location
   export let id
 
-  let item
-  let pageTitle = "loading..."
+  let item = $selectedStory
+  let liked = false
 
   onMount(async () => {
     item = await API.item(id)
-    pageTitle = item.title
   })
+
+  beforeUpdate(() => {
+    if (!liked) {
+      const savedStory = $savedStories.find((story) => story.id === item.id)
+      if (savedStory) {
+        // if item is already loaded, use it. Otherwise use the saved story item
+        item = item.title ? item : savedStory
+        liked = true
+      }
+    }
+  })
+
+  onDestroy(() => {
+    selectedStory.set({})
+  })
+
+  function like(event) {
+    if (event.type === "keydown" && event.code !== "Enter") return
+    if (liked) {
+      removeSavedStory(item)
+    } else {
+      saveStory(item)
+    }
+    liked = !liked
+  }
 </script>
 
 <style>
-  .header {
+  .item-header {
+    position: relative;
     padding: 1em;
     background: var(--c-itempage-header-bg);
   }
 
   .title {
     font-size: 1.2em;
-    line-height: 1.2;
+    line-height: 1.4;
+    color: var(--c-link);
+    margin-right: 1.75em;
+  }
+
+  .title a:focus {
+    text-decoration: underline;
+    outline: 0;
   }
 
   .title a:visited {
     color: var(--c-itempage-header-link--visited);
+  }
+
+  .title.loading {
+    color: var(--c-link);
+    margin-bottom: 2em;
+  }
+
+  .like-icon {
+    position: absolute;
+    top: -0.6em;
+    right: 1em;
+    transition: top 200ms ease;
+  }
+
+  .like-icon:hover,
+  .like-icon:focus,
+  .like-icon.liked {
+    top: -2px;
+  }
+
+  :global(.item-header .bookmark-icon) {
+    fill: var(--c-itempage-bookmark);
+  }
+
+  :global(.item-header .bookmark-icon.liked) {
+    fill: var(--c-itempage-bookmark--active);
   }
 
   .url {
@@ -39,25 +104,88 @@
   .meta {
     color: var(--c-itempage-meta);
   }
+
+  .content {
+    margin-top: 1em;
+  }
+
+  @keyframes loading {
+    to {
+      opacity: 0.75;
+    }
+  }
+
+  .comments {
+    position: relative;
+  }
+
+  .no-comments {
+    margin: 1em;
+  }
+
+  .loading-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 </style>
 
 <svelte:head>
-  <title>{pageTitle} · Svelte HN</title>
+  <title>{item.title} · Svelte HN</title>
 </svelte:head>
 
-{#if item}
-  <div class="header">
+<div class="item-header">
+  {#if item.title}
     <h2 class="title">
-      <a href={item.url}>{item.title}</a>
+      {#if item.domain}
+        <a href={item.url}>{item.title}</a>
+      {:else}{item.title}{/if}
     </h2>
-    <div class="url">{item.domain}</div>
+    {#if item.domain}
+      <div class="url">{item.domain}</div>
+    {:else}
+      <div aria-hidden class="url">——</div>
+    {/if}
+    <div
+      class="like-icon"
+      class:liked
+      on:click={like}
+      tabindex="0"
+      aria-label={liked ? 'remove bookmark' : 'bookmark'}
+    >
+      <Icon
+        scale={2}
+        data={faBookmark}
+        class="bookmark-icon {liked ? 'liked' : ''}"
+      />
+    </div>
+
     <div class="meta">
       posted {item.time_ago} by {item.user} · {item.points} points · {item.comments_count}
       comments
     </div>
-  </div>
+    {#if item.content}
+      <div class="content" in:fade={{ duration: 200 }}>
+        {@html item.content}
+      </div>
+    {/if}
+  {:else}
+    <h2 class="title loading">Loading...</h2>
+  {/if}
+</div>
 
-  <CommentTree comments={item.comments} />
-{:else}
-  <LoadingOverlay />
-{/if}
+<div class="comments" in:fade={{ duration: 50 }}>
+  {#if item.comments}
+    {#if item.comments.length > 0}
+      <CommentTree comments={item.comments} />
+    {:else}
+      <p class="no-comments">There are no comments.</p>
+    {/if}
+  {:else}
+    <div class="loading-wrapper">
+      <CommentTreeLoading itemCount={item.comments_count || 5} />
+    </div>
+  {/if}
+</div>

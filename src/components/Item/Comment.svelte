@@ -72,7 +72,7 @@
     width: 1ch;
   }
 
-  :global(p + p) {
+  :global(.comment p) {
     margin-top: 1em;
   }
 </style>

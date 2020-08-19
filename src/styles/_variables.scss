@@ -102,7 +102,7 @@ $palette: (
   --c-newsitem-bookmark: #{color("orange", $mode)};
   --c-newsitem-bookmark--hover: #{color("orange", $mode)}; // TODO
   --c-newsitem-bookmark--active: #{color("orange", $mode)};
-  --c-newsitem-swipetoaction-text: #{color("textPrimary", $mode)};
+  --c-newsitem-swipetoaction-text: #{color("white", $mode)};
   --c-newsitem-swipetoaction-bg: #{color("orange", $mode)};
   --c-newsitem-rank: #{color("textPrimary", $mode)};
   --c-newsitem-points: #{color("textSecondary", $mode)};
@@ -123,6 +123,8 @@ $palette: (
   // Itempage colors
   --c-itempage-header-bg: #{color("backgroundOffset", $mode)}; /* ItemPage */
   --c-itempage-header-link--visited: #{color("link", $mode)};
+  --c-itempage-bookmark: #{color("mediumGrey", $mode)};
+  --c-itempage-bookmark--active: #{color("orange", $mode)};
   --c-itempage-url: #{color("textSecondary", $mode)};
   --c-itempage-meta: #{color("textSecondary", $mode)};
 

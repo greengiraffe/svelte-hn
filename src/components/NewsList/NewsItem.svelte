@@ -6,16 +6,22 @@
     // faBurn,
     faBookmark,
   } from "@fortawesome/free-solid-svg-icons"
-  import { link } from "svelte-navigator"
+  import { navigate } from "svelte-navigator"
   import { beforeUpdate } from "svelte"
   import { get } from "svelte/store"
-  import { savedStories, saveStory, removeSavedStory } from "../../store"
+  import {
+    savedStories,
+    saveStory,
+    removeSavedStory,
+    selectedStory,
+  } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
 
   export let item
-  export let rank
+  export let rank = false
 
   let liked = false
+  const localUrl = !item.domain ? item.url.replace("?id=", "/") : undefined
 
   beforeUpdate(() => {
     // mark saved stories
@@ -30,6 +36,11 @@
       saveStory(item)
     }
     liked = !liked
+  }
+
+  function setSelectedStory() {
+    selectedStory.set(item)
+    navigate(localUrl || `/item/${item.id}`)
   }
 </script>
 
@@ -133,8 +144,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    font-weight: 600;
     color: var(--c-newsitem-swipetoaction-text);
-    background-color: var(--c-newsitems-swiptetoaction-bg);
+    background-color: var(--c-newsitem-swipetoaction-bg);
     padding: 0 1em;
     height: 100%;
   }
@@ -144,7 +156,7 @@
     margin-left: 5px;
   }
 
-  :global(.bookmark-icon) {
+  :global(.item .bookmark-icon) {
     position: absolute;
     right: 0;
     top: -1px;
@@ -152,13 +164,13 @@
     transition: opacity 0.2s ease, fill 0.2s ease;
   }
 
-  :global(.bookmark-icon.liked) {
-    fill: var(--c-newsitem-bookmark) !important;
+  :global(.item .bookmark-icon.liked) {
+    fill: var(--c-newsitem-bookmark);
     opacity: 1;
   }
 
-  :global(.briefcase-icon) {
-    fill: var(--c-newsitem-job-icon) !important;
+  :global(.item .briefcase-icon) {
+    fill: var(--c-newsitem-job-icon);
     margin-bottom: 0.2em;
   }
 </style>
@@ -166,7 +178,13 @@
 <SwipeToAction on:action-right={like} on:action-left={like}>
   <div class="item" slot="content">
     <h2 class="title">
-      <a href={item.url}>{item.title}</a>
+      {#if item.domain}
+        <a href={item.url}>{item.title}</a>
+      {:else}
+        <a href={localUrl} on:click|preventDefault={setSelectedStory}>
+          {item.title}
+        </a>
+      {/if}
     </h2>
     <div class="meta">
       <span>{item.time_ago}</span>
@@ -174,13 +192,11 @@
         <span>by {item.user}</span>
       {/if}
     </div>
-    <div class="url">
-      {#if item.domain}
-        <span>{item.domain}</span>
-      {:else}
-        <span aria-hidden class="no-url">——</span>
-      {/if}
-    </div>
+    {#if item.domain}
+      <div class="url">{item.domain}</div>
+    {:else}
+      <div aria-hidden class="no-url">——</div>
+    {/if}
     <div
       class="side"
       on:click={like}
@@ -203,15 +219,19 @@
         <Icon data={faBriefcase} class="briefcase-icon" />
       {/if}
     </div>
-    <a class="comments" href={`/item/${item.id}`} use:link>
+    <a
+      class="comments"
+      href={`/item/${item.id}`}
+      on:click|preventDefault={setSelectedStory}
+    >
       {item.comments_count}
       <Icon data={faComments} class="comments-icon" />
     </a>
   </div>
   <div slot="action-right" class="action right" class:liked aria-hidden="true">
-    {#if liked}Unlike{:else}Like{/if}
+    {#if liked}Don't save{:else}Save{/if}
   </div>
   <div slot="action-left" class="action left" class:liked aria-hidden="true">
-    {#if liked}Unlike{:else}Like{/if}
+    {#if liked}Don't save{:else}Save{/if}
   </div>
 </SwipeToAction>

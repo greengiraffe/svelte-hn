@@ -39,6 +39,10 @@
 </script>
 
 <style>
+  .comment-tree {
+    will-change: height, padding-top, padding-bottom, margin-top, margin-bottom;
+  }
+
   /* Indent from second level on */
   :global(.comment + .comment-tree .comment + .comment-tree) {
     padding-left: 0.25rem;
