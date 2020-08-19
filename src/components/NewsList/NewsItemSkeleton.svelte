@@ -7,7 +7,7 @@
 <style>
   @keyframes loading {
     to {
-      opacity: 1;
+      opacity: 0.15;
     }
   }
 
@@ -15,6 +15,7 @@
     width: 100%;
     height: 4em;
     position: relative;
+    background-color: var(--c-background);
   }
 
   .skeleton::after {
@@ -42,7 +43,7 @@
     background-position: 3.5em 2.55em, 3.5em 1.5em, 3.5em 0.25em, 0 0;
     animation: loading 1s ease infinite alternate;
     animation-delay: var(--delay);
-    opacity: 0.25;
+    opacity: 0.65;
   }
 </style>
 

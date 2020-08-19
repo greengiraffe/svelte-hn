@@ -16,8 +16,6 @@
   }
 </style>
 
-<!--      -->
-
 <div class="wrapper" in:fade={{ duration: 50 }}>
   {#each Array(itemCount) as _, index}
     <NewsItemSkeleton {index} />

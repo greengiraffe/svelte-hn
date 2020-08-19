@@ -7,7 +7,7 @@
 <ul class="items">
   {#each items as item, i}
     <li>
-      <NewsItem {item} num={i + 1} />
+      <NewsItem {item} />
     </li>
   {/each}
 </ul>

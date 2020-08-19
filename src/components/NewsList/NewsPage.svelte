@@ -18,9 +18,6 @@
 
   const PAGE_SIZE = 30
 
-  export let location
-  console.log(location)
-
   $: if (storyType !== $currentStoryType) loadInitialItems()
 
   function loadInitialItems() {
