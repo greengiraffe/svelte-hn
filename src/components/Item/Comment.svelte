@@ -1,15 +1,17 @@
 <script>
+  import { createEventDispatcher } from "svelte"
+
   export let comment
   export let showingReplies
 
+  let showAbsoluteDate = false
   let replyToggleSymbol = "+"
   $: replyToggleSymbol = showingReplies ? "–" : "+"
 
-  import { createEventDispatcher } from "svelte"
-
   const dispatch = createEventDispatcher()
-
-  const fullDate = new Date(comment.time * 1000).toLocaleString()
+  $: fullDate = new Date(comment.time * 1000).toLocaleString("en-GB")
+  $: dateString = showAbsoluteDate ? fullDate : comment.time_ago
+  $: dateHover = showAbsoluteDate ? comment.time_ago : fullDate
 
   const hue = (comment.level * 70 + 204) % 360 // rainbow
   const color = `${hue}, 50%, 50%`
@@ -21,6 +23,10 @@
     if (!e.target.href && comment.comments.length > 0) {
       dispatch("toggle-replies", comment.id)
     }
+  }
+
+  function toggleShowAbsoluteDate() {
+    showAbsoluteDate = !showAbsoluteDate
   }
 </script>
 
@@ -80,7 +86,9 @@
 <div class="comment" style={`--current-color: ${color}`} class:firstLevel>
   <div class="header">
     <h3>{comment.user}</h3>
-    <span class="time-ago" title={fullDate}>· {comment.time_ago}</span>
+    <span class="time-ago" title={dateHover} on:click={toggleShowAbsoluteDate}>
+      · {dateString}
+    </span>
   </div>
   <div class="content">
     {@html comment.content}

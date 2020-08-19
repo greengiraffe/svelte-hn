@@ -17,6 +17,13 @@
 
   let item = $selectedStory
   let liked = false
+  let showAbsoluteDate = false
+
+  $: fullDate = new Date(item.time * 1000).toLocaleString("en-GB")
+  $: dateString = showAbsoluteDate
+    ? `posted on ${fullDate}`
+    : `posted ${item.time_ago}`
+  $: dateHover = showAbsoluteDate ? item.time_ago : fullDate
 
   onMount(async () => {
     item = await API.item(id)
@@ -45,6 +52,10 @@
       saveStory(item)
     }
     liked = !liked
+  }
+
+  function toggleShowAbsoluteDate() {
+    showAbsoluteDate = !showAbsoluteDate
   }
 </script>
 
@@ -163,8 +174,14 @@
     </div>
 
     <div class="meta">
-      posted {item.time_ago} by {item.user} · {item.points} points · {item.comments_count}
-      comments
+      <span
+        class="date-toggle"
+        on:click={toggleShowAbsoluteDate}
+        title={dateHover}
+      >
+        {dateString}
+      </span>
+      by {item.user} · {item.points} points · {item.comments_count} comments
     </div>
     {#if item.content}
       <div class="content" in:fade={{ duration: 200 }}>
