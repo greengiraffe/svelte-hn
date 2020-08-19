@@ -1,6 +1,5 @@
 <script>
-  import { onMount } from "svelte"
-  import { get, set } from "idb-keyval"
+  import { onMount, onDestroy } from "svelte"
   import { Router, Route } from "svelte-navigator"
   export let url = ""
 
@@ -11,18 +10,17 @@
   import NotFound from "./components/NotFound.svelte"
   import SavedItemsPage from "./components/SavedItems/SavedItemsPage.svelte"
 
-  import { savedStories } from "./store"
+  import { subscribeStoresFromIDB, initStoresFromIDB } from "./helper/idbHelper"
+
+  let unsubscribeIDBStores
 
   onMount(() => {
-    // 1. load saved stories from IndexedDB (idb-keyval)
-    get("savedStories").then((stories) => {
-      if (stories) savedStories.set(stories)
-    })
-    // 2. keep IndexedDB up to date by subscribing to changes of
-    // the savedStories svelte store
-    savedStories.subscribe((val) => {
-      set("savedStories", val)
-    })
+    initStoresFromIDB()
+    unsubscribeIDBStores = subscribeStoresFromIDB()
+  })
+
+  onDestroy(() => {
+    unsubscribeIDBStores()
   })
 </script>
 
