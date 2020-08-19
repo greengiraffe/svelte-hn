@@ -42,6 +42,7 @@
     display: flex;
     align-items: center;
     border-radius: 0;
+    color: var(--c-titlebar-text);
   }
 
   .menu:hover,
@@ -53,7 +54,6 @@
   :global(.menu-icon) {
     vertical-align: top;
     margin: 0 auto;
-    fill: var(--c-titlebar-icon) !important;
   }
 </style>
 
