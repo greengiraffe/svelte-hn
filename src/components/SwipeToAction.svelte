@@ -1,9 +1,9 @@
 <script>
-  import { createEventDispatcher, onMount } from "svelte"
+  import { createEventDispatcher, onMount, tick } from "svelte"
 
   const dispatch = createEventDispatcher()
-  const transitionDuration = 300
-  const minDrag = 5
+  const TRANSITION_DURATION = 300
+  const MIN_DRAG = 5
 
   let itemEl // references div
   let maxDrag, dragRatio
@@ -11,18 +11,21 @@
   let dragging = false
   let diff = 0
   let dragDirection
+  let renderActions = false
 
   // Reactive properties
   $: actionOpacity = Math.min(0.25 + Math.abs(diff) / maxDrag, 1)
   $: contentStyle = `
 		transform: translate3d(${diff}px,0,0);
 		transition: transform ${
-      dragging ? 0 : transitionDuration * dragRatio
+      dragging ? 0 : TRANSITION_DURATION * dragRatio
     }ms ease-out;
 	`
   $: actionsStyle = `
 		opacity: ${actionOpacity};
-		transition: opacity ${dragging ? 0 : transitionDuration * dragRatio}ms ease-out;
+		transition: opacity ${
+      dragging ? 0 : TRANSITION_DURATION * dragRatio
+    }ms ease-out;
 	`
 
   onMount(() => {
@@ -49,17 +52,20 @@
         if (dragDirection === "right") {
           dispatch("action-left")
         }
-      }, transitionDuration)
+        renderActions = false
+      }, TRANSITION_DURATION)
     }
     diff = 0
   }
 
-  function handleMove(e) {
+  async function handleMove(e) {
     if (!dragging) return
     const newDiff = e.clientX - start
-    if (Math.abs(newDiff) < minDrag) {
+    if (Math.abs(newDiff) < MIN_DRAG) {
       return
     }
+    renderActions = true
+    await tick() // make sure that actions are rendered to the DOM
     if (Math.abs(newDiff) > maxDrag) {
       diff = Math.sign(newDiff) * maxDrag
     } else {
@@ -123,14 +129,16 @@
 {/if}
 
 <div class="sta-wrapper">
-  <div class="sta-actions" style={actionsStyle}>
-    <div class="sta-left">
-      <slot name="action-left" />
+  {#if renderActions}
+    <div class="sta-actions" style={actionsStyle}>
+      <div class="sta-left">
+        <slot name="action-left" />
+      </div>
+      <div class="sta-right">
+        <slot name="action-right" />
+      </div>
     </div>
-    <div class="sta-right">
-      <slot name="action-right" />
-    </div>
-  </div>
+  {/if}
   <div
     class="sta-content"
     bind:this={itemEl}
