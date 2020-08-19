@@ -12,7 +12,12 @@
   } from "@fortawesome/free-solid-svg-icons"
   import NavLink from "./NavLink.svelte"
   import { slide } from "../transitions"
-  import { showSidebar, darkMode, savedStoryCount } from "../store"
+  import {
+    showSidebar,
+    darkMode,
+    savedStoryCount,
+    expandAllComments,
+  } from "../store"
 
   // disable scrolling when sidebar is shown
   $: document.body.style.overflow = $showSidebar ? "hidden" : "unset"
@@ -75,6 +80,15 @@
     font-weight: 600;
   }
 
+  .settings ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .settings li {
+    list-style-type: none;
+  }
+
   .saved-stories-count {
     color: var(--c-text--secondary);
   }
@@ -120,16 +134,32 @@
 
     <div class="section settings">
       <h3>Settings</h3>
-      <label>
-        <input
-          type="checkbox"
-          checked={$darkMode}
-          on:click={() => {
-            darkMode.update((v) => !v)
-          }}
-        />
-        Dark Mode
-      </label>
+      <ul>
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              checked={$darkMode}
+              on:click={() => {
+                darkMode.update((v) => !v)
+              }}
+            />
+            Dark Mode
+          </label>
+        </li>
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              checked={$expandAllComments}
+              on:click={() => {
+                expandAllComments.update((v) => !v)
+              }}
+            />
+            Expand all comments
+          </label>
+        </li>
+      </ul>
     </div>
 
   </div>

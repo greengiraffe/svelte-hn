@@ -10,6 +10,8 @@ export const selectedStory = writable({})
 // Required to cache multiple pages of newsItems
 export const newsItems = writable([])
 
+export const expandAllComments = writable(false)
+
 // Saved stories
 export const savedStories = writable([])
 export const savedStoryCount = derived(

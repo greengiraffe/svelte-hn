@@ -1,18 +1,22 @@
 import { get, set } from "idb-keyval"
-import { savedStories, darkMode } from "../store"
+import { savedStories, darkMode, expandAllComments } from "../store"
+
+const idbManagedStores = {
+  savedStories,
+  darkMode,
+  expandAllComments,
+}
 
 /**
  * Retrieve values from IndexedDB and update the svelte
  * stores accordingly.
  */
 export function initStoresFromIDB() {
-  // 1. load saved stories from IndexedDB (idb-keyval)
-  get("savedStories").then((stories) => {
-    if (stories !== undefined) savedStories.set(stories)
-  })
-  get("darkMode").then((isDarkMode) => {
-    if (isDarkMode !== undefined) darkMode.set(isDarkMode)
-  })
+  for (const [storeName, store] of Object.entries(idbManagedStores)) {
+    get(storeName).then((val) => {
+      if (val !== undefined) store.set(val)
+    })
+  }
 }
 
 /**
@@ -21,16 +25,13 @@ export function initStoresFromIDB() {
  */
 export function subscribeStoresFromIDB() {
   const unsubscribeFunctions = []
-  unsubscribeFunctions.push(
-    savedStories.subscribe((val) => {
-      set("savedStories", val)
-    })
-  )
-  unsubscribeFunctions.push(
-    darkMode.subscribe((val) => {
-      set("darkMode", val)
-    })
-  )
+  for (const [storeName, store] of Object.entries(idbManagedStores)) {
+    unsubscribeFunctions.push(
+      store.subscribe((val) => {
+        set(storeName, val)
+      })
+    )
+  }
   return () => {
     unsubscribeFunctions.forEach((fn) => fn())
   }

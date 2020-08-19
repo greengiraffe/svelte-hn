@@ -133,6 +133,9 @@ $palette: (
   --c-comment-bg: #{color("background", $mode)};
   --c-comment-header: #{color("textSecondary", $mode)};
   --c-comment-footer: #{color("textSecondary", $mode)};
+
+  // CommentTree colors
+  --c-commenttree-bg: #{color("backgroundOffset", $mode)};
 }
 
 // Use the CSS color variables, default to light mode

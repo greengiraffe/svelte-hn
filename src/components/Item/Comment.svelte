@@ -35,7 +35,7 @@
   }
 
   .firstLevel {
-    border-left: 0;
+    /* border-left: 0; */
   }
 
   .header {
