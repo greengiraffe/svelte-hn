@@ -27,10 +27,9 @@
 <style>
   .comment {
     --current-color: 128, 128, 128; /* set by JS, for indentation styles */
-    padding: 1em;
+    padding: 1em 1em 0.5em 1em;
     background-color: var(--c-comment-bg);
     border-left: 0.25rem solid;
-    font-size: 1em;
     border-color: hsl(var(--current-color));
     border-top: 1px solid hsla(var(--current-color), 0.3);
   }
@@ -41,10 +40,13 @@
 
   .header {
     display: flex;
-    justify-content: space-between;
     color: var(--c-comment-header);
     line-height: 1.2;
     margin-bottom: 1em;
+  }
+
+  .time-ago {
+    margin-left: 0.45em;
   }
 
   h3 {
@@ -52,18 +54,17 @@
     color: hsl(var(--current-color));
   }
 
-  li {
-    padding-left: 1em;
-    border-left: 1px solid black;
-  }
-
   .content {
-    line-height: 1.2;
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
   }
 
   .footer {
     color: var(--c-comment-footer);
+    display: flex;
+  }
+
+  .toggle-comments-button {
+    margin-left: auto;
   }
 
   .reply-toggle-symbol {
@@ -76,23 +77,20 @@
   }
 </style>
 
-<div
-  class="comment"
-  style={`--current-color: ${color}`}
-  class:firstLevel
-  on:click={toggleReplies}
->
+<div class="comment" style={`--current-color: ${color}`} class:firstLevel>
   <div class="header">
     <h3>{comment.user}</h3>
-    <span title={fullDate}>{comment.time_ago}</span>
+    <span class="time-ago" title={fullDate}>· {comment.time_ago}</span>
   </div>
   <div class="content">
     {@html comment.content}
   </div>
   <div class="footer">
     {#if commentCount > 0}
-      <span class="reply-toggle-symbol">{replyToggleSymbol}</span>
-      <span class="comment-count">{commentCount} {commentString}</span>
+      <button class="toggle-comments-button" on:click={toggleReplies}>
+        <span class="reply-toggle-symbol">{replyToggleSymbol}</span>
+        <span class="comment-count">{commentCount} {commentString}</span>
+      </button>
     {/if}
   </div>
 </div>
