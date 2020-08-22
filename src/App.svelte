@@ -3,7 +3,7 @@
   import { Router, Route } from "svelte-navigator"
   export let url = ""
 
-  import TitleBar from "./components/TitleBar.svelte"
+  import TitleBar from "./components/TitleBar/TitleBar.svelte"
   import SideBar from "./components/SideBar.svelte"
   import NewsPage from "./components/NewsList/NewsPage.svelte"
   import ItemPage from "./components/Item/ItemPage.svelte"

@@ -12,7 +12,7 @@
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
   import CommentTreeLoading from "./CommentTreeLoading.svelte"
-  import TitleBar from "../TitleBar.svelte"
+  import TitleBar from "../TitleBar/TitleBar.svelte"
 
   export let id
 

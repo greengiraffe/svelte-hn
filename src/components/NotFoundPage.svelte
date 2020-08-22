@@ -1,5 +1,5 @@
 <script>
-  import TitleBar from "./TitleBar.svelte"
+  import TitleBar from "./TitleBar/TitleBar.svelte"
 </script>
 
 <style>

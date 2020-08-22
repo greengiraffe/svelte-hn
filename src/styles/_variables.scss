@@ -80,6 +80,7 @@ $palette: (
   --c-button-bg: #{color("backgroundOffset", $mode)};
   --c-button-bg--hover: #{color("accent", $mode)};
   --c-button-text--hover: #{color("white", $mode)};
+  --c-border: #{color("backgroundOffset", $mode)};
 
   // Titlebar colors
   --c-titlebar-bg: #{color("darkBlue", $mode)}; /* TitleBar */

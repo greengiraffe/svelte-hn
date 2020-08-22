@@ -4,10 +4,17 @@
   import { showSidebar } from "../../store"
   import { savedStories } from "../../store"
   import SavedItemList from "./SavedItemList.svelte"
-  import { faSearch } from "@fortawesome/free-solid-svg-icons"
-  import TitleBar from "../TitleBar.svelte"
+  import {
+    faSearch,
+    faTrash,
+    faDownload,
+  } from "@fortawesome/free-solid-svg-icons"
+  import TitleBar from "../TitleBar/TitleBar.svelte"
+  import TitleBarMenu from "../TitleBar/TitleBarMenu.svelte"
+  import TitleBarMenuItem from "../TitleBar/TitleBarMenuItem.svelte"
 
   let searchValue = ""
+  let showMenu = false
 
   afterUpdate(() => {
     showSidebar.set(false)
@@ -31,6 +38,20 @@
     if (remove) {
       savedStories.set([])
     }
+  }
+
+  function downloadBookmarks() {
+    const element = document.createElement("a")
+    element.setAttribute(
+      "href",
+      "data:application/json;charset=utf-8," +
+        encodeURIComponent(JSON.stringify($savedStories))
+    )
+    element.setAttribute("download", "svelte-hn-bookmarks.json")
+    element.style.display = "none"
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
   }
 </script>
 
@@ -57,21 +78,34 @@
     border: 0;
     background-color: var(--c-background);
   }
-
+  /* 
   .action-wrapper {
     display: flex;
     height: 4em;
     justify-content: center;
     align-items: center;
     border-top: var(--c-newsitem-border);
-  }
+  } */
 </style>
 
 <svelte:head>
   <title>Saved Stories · Svelte HN</title>
 </svelte:head>
 
-<TitleBar />
+<TitleBar>
+  <TitleBarMenu>
+    <TitleBarMenuItem
+      icon={faTrash}
+      text="Remove all bookmarks"
+      on:click={removeAllSavedStories}
+    />
+    <TitleBarMenuItem
+      icon={faDownload}
+      text="Download as JSON"
+      on:click={downloadBookmarks}
+    />
+  </TitleBarMenu>
+</TitleBar>
 
 <main>
   {#if $savedStories.length > 0}
@@ -88,11 +122,8 @@
       />
     </div>
     <SavedItemList items={filteredStories} />
-    <div class="action-wrapper">
-      <button class="remove-all" on:click={removeAllSavedStories}>
-        Remove all bookmarks
-      </button>
-    </div>
+    <!-- <div class="action-wrapper">
+    </div> -->
   {:else}
     <div class="empty-wrapper">
       <p>No stories saved.</p>

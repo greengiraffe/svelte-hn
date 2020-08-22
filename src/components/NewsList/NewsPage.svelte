@@ -8,7 +8,7 @@
   import { InvalidStoryTypeError } from "../../api/errors"
   import NewsItemList from "./NewsItemList.svelte"
   import { faArrowUp } from "@fortawesome/free-solid-svg-icons"
-  import TitleBar from "../TitleBar.svelte"
+  import TitleBar from "../TitleBar/TitleBar.svelte"
 
   export let storyType // passed by svelte-navigator from App.svelte
 
