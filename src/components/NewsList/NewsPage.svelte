@@ -25,6 +25,7 @@
     const LOADING_INDICATOR_DELAY = 200 // ms
     currentPage = 1
     isLoading = true
+    hasMorePages = true
 
     // show loading indicator if the content is still
     // loading after 200 ms
