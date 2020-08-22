@@ -59,6 +59,7 @@
     border-left: 0.25rem solid;
     border-color: hsl(var(--current-color));
     border-top: 1px solid hsla(var(--current-color), 0.3);
+    word-wrap: break-word;
   }
 
   .header {
