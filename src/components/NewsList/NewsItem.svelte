@@ -103,6 +103,7 @@
   }
 
   .no-url {
+    grid-area: url;
     color: var(--c-newsitem-no-url);
   }
 
@@ -171,7 +172,7 @@
 
   :global(.item .briefcase-icon) {
     fill: var(--c-newsitem-job-icon);
-    margin-bottom: 0.2em;
+    margin-top: 1em;
   }
 </style>
 
@@ -219,14 +220,17 @@
         <Icon data={faBriefcase} class="briefcase-icon" />
       {/if}
     </div>
-    <a
-      class="comments"
-      href={`/item/${item.id}`}
-      on:click|preventDefault={setSelectedStory}
-    >
-      {item.comments_count}
-      <Icon data={faComments} class="comments-icon" />
-    </a>
+
+    {#if item.type !== 'job'}
+      <a
+        class="comments"
+        href={`/item/${item.id}`}
+        on:click|preventDefault={setSelectedStory}
+      >
+        {item.comments_count}
+        <Icon data={faComments} class="comments-icon" />
+      </a>
+    {/if}
   </div>
   <div slot="action-right" class="action right" class:liked aria-hidden="true">
     {#if liked}Don't save{:else}Save{/if}
