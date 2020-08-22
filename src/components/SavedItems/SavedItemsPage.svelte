@@ -15,12 +15,12 @@
   $: filteredStories = $savedStories.filter((item) => {
     const trimmedSearchValue = searchValue.trim().toLowerCase()
 
-    return (
-      trimmedSearchValue.length === 0 ||
-      item.title.toLowerCase().includes(trimmedSearchValue) ||
-      item.user.toLowerCase().includes(trimmedSearchValue) ||
-      item.url.toLowerCase().includes(trimmedSearchValue)
-    )
+    return Object.values(item).some((val) => {
+      return (
+        typeof val === "string" &&
+        val.toLowerCase().includes(trimmedSearchValue)
+      )
+    })
   })
 
   function removeAllSavedStories() {
@@ -70,19 +70,19 @@
   <title>Saved Stories · Svelte HN</title>
 </svelte:head>
 
-<div class="search-wrapper">
-  <label class="search-label" for="search">
-    <Icon data={faSearch} />
-  </label>
-  <input
-    class="search-input"
-    id="search"
-    type="text"
-    placeholder="Search for story by title, author or URL"
-    bind:value={searchValue}
-  />
-</div>
 {#if $savedStories.length > 0}
+  <div class="search-wrapper">
+    <label class="search-label" for="search">
+      <Icon data={faSearch} />
+    </label>
+    <input
+      class="search-input"
+      id="search"
+      type="text"
+      placeholder="Search for story by title, author, type or URL"
+      bind:value={searchValue}
+    />
+  </div>
   <SavedItemList items={filteredStories} />
   <div class="action-wrapper">
     <button class="remove-all" on:click={removeAllSavedStories}>
