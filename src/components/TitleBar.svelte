@@ -43,6 +43,7 @@
     align-items: center;
     border-radius: 0;
     color: var(--c-titlebar-text);
+    background-color: var(--c-titlebar-icon-bg);
   }
 
   .menu:hover,

@@ -21,11 +21,13 @@ button {
   border-radius: 5px;
   padding: 0.5em;
   cursor: pointer;
+  color: var(--c-text--primary);
+  background-color: var(--c-button-bg);
 
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--c-button-bg);
+    background-color: var(--c-button-bg--hover);
   }
 }
 

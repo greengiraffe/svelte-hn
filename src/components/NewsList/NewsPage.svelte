@@ -97,10 +97,7 @@
     justify-content: center;
     align-items: center;
     height: 4em;
-  }
-
-  .more-button {
-    background: var(--c-button-bg);
+    border-top: 1px solid var(--c-newsitem-border);
   }
 
   .up-button {
@@ -109,17 +106,6 @@
     margin: 0.5em;
     width: 2em;
     height: 2em;
-    transition: padding 0.2s ease;
-  }
-
-  :global(.up-button:hover .up-button-icon, .up-button:focus .up-button-icon) {
-    fill: var(--c-button-bg--hover);
-  }
-
-  .up-button:hover,
-  .up-button:focus {
-    background: transparent;
-    padding-top: 0.25em;
   }
 </style>
 
