@@ -144,7 +144,7 @@
 </style>
 
 <svelte:head>
-  <title>{item.title} · Svelte HN</title>
+  <title>{item.title || 'Loading...'} · Svelte HN</title>
 </svelte:head>
 
 <div class="item-header">

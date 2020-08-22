@@ -1,5 +1,6 @@
 <script>
-  import { createEventDispatcher } from "svelte"
+  import { createEventDispatcher, onMount } from "svelte"
+  import { darkMode } from "../../store"
 
   export let comment
   export let showingReplies
@@ -13,10 +14,30 @@
   $: dateString = showAbsoluteDate ? fullDate : comment.time_ago
   $: dateHover = showAbsoluteDate ? comment.time_ago : fullDate
 
-  const hue = (comment.level * 70 + 204) % 360 // rainbow
-  const color = `${hue}, 50%, 50%`
+  const colors = {
+    dark: [
+      "204, 61%, 60%", // blue
+      "170, 71%, 55%", // teal
+      "126, 65%, 60%", // green
+      "50, 65%, 60%", // yellow
+      "24, 90%, 65%", // orange
+      "0, 75%, 68%", // red
+      "235, 98%, 80%", // purple
+    ],
+    light: [
+      "204, 81%, 30%", // blue
+      "160, 70%, 32%", // teal
+      "90, 75%, 30%", // green
+      "50, 80%, 33%", // yellow
+      "24, 77%, 46%", // orange
+      "0, 60%, 53%", // red
+      "235, 98%, 62%", // purple
+    ],
+  }
+  const mode = $darkMode ? "dark" : "light"
+  const color = colors[mode][comment.level % colors[mode].length]
   const commentCount = comment.comments.length
-  const commentString = commentCount === 1 ? "comment" : "comments"
+  const commentString = commentCount === 1 ? "answer" : "answers"
   const firstLevel = comment.level === 0
 
   function toggleReplies(e) {
@@ -38,10 +59,6 @@
     border-left: 0.25rem solid;
     border-color: hsl(var(--current-color));
     border-top: 1px solid hsla(var(--current-color), 0.3);
-  }
-
-  .firstLevel {
-    /* border-left: 0; */
   }
 
   .header {
