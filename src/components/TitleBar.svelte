@@ -71,4 +71,7 @@
     Hacker News
     {#if isNewsList && $currentStoryType}· {$currentStoryType}{/if}
   </h1>
+  <div class="actions">
+    <slot />
+  </div>
 </header>

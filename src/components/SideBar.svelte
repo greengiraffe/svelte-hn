@@ -47,6 +47,7 @@
     min-width: 15em;
     max-width: 20vw;
     height: calc(100% - 3em);
+    margin-top: 3em;
     padding: 1em 0;
     z-index: 3;
     background-color: var(--c-sidebar-bg);

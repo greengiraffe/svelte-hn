@@ -5,6 +5,7 @@
   import { savedStories } from "../../store"
   import SavedItemList from "./SavedItemList.svelte"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
+  import TitleBar from "../TitleBar.svelte"
 
   let searchValue = ""
 
@@ -70,32 +71,36 @@
   <title>Saved Stories · Svelte HN</title>
 </svelte:head>
 
-{#if $savedStories.length > 0}
-  <div class="search-wrapper">
-    <label class="search-label" for="search">
-      <Icon data={faSearch} />
-    </label>
-    <input
-      class="search-input"
-      id="search"
-      type="text"
-      placeholder="Search for story by title, author, type or URL"
-      bind:value={searchValue}
-    />
-  </div>
-  <SavedItemList items={filteredStories} />
-  <div class="action-wrapper">
-    <button class="remove-all" on:click={removeAllSavedStories}>
-      Remove all bookmarks
-    </button>
-  </div>
-{:else}
-  <div class="empty-wrapper">
-    <p>No stories saved.</p>
-    <p>
-      Add a bookmark by dragging a story in the list left or right.
-      Alternatively click the bookmark icon that appears when hovering over the
-      left side of an item.
-    </p>
-  </div>
-{/if}
+<TitleBar />
+
+<main>
+  {#if $savedStories.length > 0}
+    <div class="search-wrapper">
+      <label class="search-label" for="search">
+        <Icon data={faSearch} />
+      </label>
+      <input
+        class="search-input"
+        id="search"
+        type="text"
+        placeholder="Search for story by title, author, type or URL"
+        bind:value={searchValue}
+      />
+    </div>
+    <SavedItemList items={filteredStories} />
+    <div class="action-wrapper">
+      <button class="remove-all" on:click={removeAllSavedStories}>
+        Remove all bookmarks
+      </button>
+    </div>
+  {:else}
+    <div class="empty-wrapper">
+      <p>No stories saved.</p>
+      <p>
+        Add a bookmark by dragging a story in the list left or right.
+        Alternatively click the bookmark icon that appears when hovering over
+        the left side of an item.
+      </p>
+    </div>
+  {/if}
+</main>

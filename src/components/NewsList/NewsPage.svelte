@@ -8,6 +8,7 @@
   import { InvalidStoryTypeError } from "../../api/errors"
   import NewsItemList from "./NewsItemList.svelte"
   import { faArrowUp } from "@fortawesome/free-solid-svg-icons"
+  import TitleBar from "../TitleBar.svelte"
 
   export let storyType // passed by svelte-navigator from App.svelte
 
@@ -113,23 +114,27 @@
   <title>{storyType} · Svelte HN</title>
 </svelte:head>
 
-{#if $newsItems && !showLoadingIndicator}
-  <NewsItemList items={$newsItems} delayTransition={currentPage === 1} />
-  {#if hasMorePages}
-    <div class="more-wrapper">
-      <button class="more-button" on:click={loadNextPage}>Load more</button>
-      <button class="up-button" on:click={scrollToTop}>
-        <Icon class="up-button-icon" data={faArrowUp} />
-      </button>
-    </div>
+<TitleBar />
+
+<main>
+  {#if $newsItems && !showLoadingIndicator}
+    <NewsItemList items={$newsItems} delayTransition={currentPage === 1} />
+    {#if hasMorePages}
+      <div class="more-wrapper">
+        <button class="more-button" on:click={loadNextPage}>Load more</button>
+        <button class="up-button" on:click={scrollToTop}>
+          <Icon class="up-button-icon" data={faArrowUp} />
+        </button>
+      </div>
+    {:else}
+      <div class="more-wrapper">
+        <p class="no-more-pages">No more pages to load.</p>
+        <button class="up-button" on:click={scrollToTop} title="Go up">
+          <Icon data={faArrowUp} />
+        </button>
+      </div>
+    {/if}
   {:else}
-    <div class="more-wrapper">
-      <p class="no-more-pages">No more pages to load.</p>
-      <button class="up-button" on:click={scrollToTop} title="Go up">
-        <Icon data={faArrowUp} />
-      </button>
-    </div>
+    <NewsItemsLoading />
   {/if}
-{:else}
-  <NewsItemsLoading />
-{/if}
+</main>

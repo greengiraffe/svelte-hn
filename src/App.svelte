@@ -7,7 +7,7 @@
   import SideBar from "./components/SideBar.svelte"
   import NewsPage from "./components/NewsList/NewsPage.svelte"
   import ItemPage from "./components/Item/ItemPage.svelte"
-  import NotFound from "./components/NotFound.svelte"
+  import NotFoundPage from "./components/NotFoundPage.svelte"
   import SavedItemsPage from "./components/SavedItems/SavedItemsPage.svelte"
 
   import { subscribeStoresFromIDB, initStoresFromIDB } from "./helper/idbHelper"
@@ -36,13 +36,10 @@
 </style>
 
 <Router {url}>
-  <TitleBar />
-  <main>
-    <SideBar />
-    <Route path="/" component={NewsPage} storyType="top" />
-    <Route path="/saved" component={SavedItemsPage} />
-    <Route path="/:storyType" component={NewsPage} />
-    <Route path="/item/:id" component={ItemPage} />
-    <Route path="/not-found" component={NotFound} />
-  </main>
+  <SideBar />
+  <Route path="/" component={NewsPage} storyType="top" />
+  <Route path="/saved" component={SavedItemsPage} />
+  <Route path="/:storyType" component={NewsPage} />
+  <Route path="/item/:id" component={ItemPage} />
+  <Route path="/not-found" component={NotFoundPage} />
 </Router>

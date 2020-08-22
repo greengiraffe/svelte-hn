@@ -12,6 +12,7 @@
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
   import CommentTreeLoading from "./CommentTreeLoading.svelte"
+  import TitleBar from "../TitleBar.svelte"
 
   export let id
 
@@ -147,62 +148,66 @@
   <title>{item.title || 'Loading...'} · Svelte HN</title>
 </svelte:head>
 
-<div class="item-header">
-  {#if item.title}
-    <h2 class="title">
-      {#if item.domain}
-        <a href={item.url}>{item.title}</a>
-      {:else}{item.title}{/if}
-    </h2>
-    {#if item.domain}
-      <div class="url">{item.domain}</div>
-    {:else}
-      <div aria-hidden class="url">——</div>
-    {/if}
-    <div
-      class="like-icon"
-      class:liked
-      on:click={like}
-      tabindex="0"
-      aria-label={liked ? 'remove bookmark' : 'bookmark'}
-    >
-      <Icon
-        scale={2}
-        data={faBookmark}
-        class="bookmark-icon {liked ? 'liked' : ''}"
-      />
-    </div>
+<TitleBar />
 
-    <div class="meta">
-      <span
-        class="date-toggle"
-        on:click={toggleShowAbsoluteDate}
-        title={dateHover}
+<main>
+  <div class="item-header">
+    {#if item.title}
+      <h2 class="title">
+        {#if item.domain}
+          <a href={item.url}>{item.title}</a>
+        {:else}{item.title}{/if}
+      </h2>
+      {#if item.domain}
+        <div class="url">{item.domain}</div>
+      {:else}
+        <div aria-hidden class="url">——</div>
+      {/if}
+      <div
+        class="like-icon"
+        class:liked
+        on:click={like}
+        tabindex="0"
+        aria-label={liked ? 'remove bookmark' : 'bookmark'}
       >
-        {dateString}
-      </span>
-      by {item.user} · {item.points} points · {item.comments_count} comments
-    </div>
-    {#if item.content}
-      <div class="content" in:fade={{ duration: 200 }}>
-        {@html item.content}
+        <Icon
+          scale={2}
+          data={faBookmark}
+          class="bookmark-icon {liked ? 'liked' : ''}"
+        />
+      </div>
+
+      <div class="meta">
+        <span
+          class="date-toggle"
+          on:click={toggleShowAbsoluteDate}
+          title={dateHover}
+        >
+          {dateString}
+        </span>
+        by {item.user} · {item.points} points · {item.comments_count} comments
+      </div>
+      {#if item.content}
+        <div class="content" in:fade={{ duration: 200 }}>
+          {@html item.content}
+        </div>
+      {/if}
+    {:else}
+      <h2 class="title loading">Loading...</h2>
+    {/if}
+  </div>
+
+  <div class="comments" in:fade={{ duration: 50 }}>
+    {#if item.comments}
+      {#if item.comments.length > 0}
+        <CommentTree comments={item.comments} />
+      {:else}
+        <p class="no-comments">There are no comments.</p>
+      {/if}
+    {:else}
+      <div class="loading-wrapper">
+        <CommentTreeLoading itemCount={item.comments_count || 5} />
       </div>
     {/if}
-  {:else}
-    <h2 class="title loading">Loading...</h2>
-  {/if}
-</div>
-
-<div class="comments" in:fade={{ duration: 50 }}>
-  {#if item.comments}
-    {#if item.comments.length > 0}
-      <CommentTree comments={item.comments} />
-    {:else}
-      <p class="no-comments">There are no comments.</p>
-    {/if}
-  {:else}
-    <div class="loading-wrapper">
-      <CommentTreeLoading itemCount={item.comments_count || 5} />
-    </div>
-  {/if}
-</div>
+  </div>
+</main>
