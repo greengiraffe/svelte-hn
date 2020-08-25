@@ -42,13 +42,11 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
     min-width: 15em;
     max-width: 20vw;
     height: calc(100% - 3em);
     margin-top: 3em;
-    padding: 1em 0;
     z-index: 3;
     background-color: var(--c-sidebar-bg);
     overflow: hidden;
@@ -60,13 +58,7 @@
     display: flex;
     flex-direction: column;
     font-weight: 600;
-  }
-
-  nav div {
-    padding: 0 1em;
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1.5em 1fr;
+    margin-top: 1em;
   }
 
   .section {
@@ -75,6 +67,7 @@
 
   .settings {
     padding: 0 1em;
+    margin-top: auto;
   }
 
   .settings h3 {
@@ -92,46 +85,30 @@
     list-style-type: none;
   }
 
-  .saved-stories-count {
-    color: var(--c-text--secondary);
+  .info {
+    border-top: 1px solid var(--c-border);
+    font-size: 0.8em;
+    padding: 0.5em 1em;
   }
 </style>
 
 {#if $showSidebar}
   <div transition:slide class={'sidebar'}>
     <nav>
-      <div>
-        <Icon data={faStar} />
-        <NavLink to="/top">Top</NavLink>
-      </div>
-      <div>
-        <Icon data={faCertificate} />
-        <NavLink to="/new">New</NavLink>
-      </div>
-      <div>
-        <Icon data={faMedal} />
-        <NavLink to="/best">Best</NavLink>
-      </div>
-      <div>
-        <Icon data={faQuestion} />
-        <NavLink to="/ask">Ask</NavLink>
-      </div>
-      <div>
-        <Icon data={faHandPointRight} />
-        <NavLink to="/show">Show</NavLink>
-      </div>
-      <div>
-        <Icon data={faBriefcase} />
-        <NavLink to="/jobs">Jobs</NavLink>
-      </div>
+      <NavLink to="/top" icon={faStar} text="Top" />
+      <NavLink to="/new" icon={faCertificate} text="New" />
+      <NavLink to="/best" icon={faMedal} text="Best" />
+      <NavLink to="/ask" icon={faQuestion} text="Ask" />
+      <NavLink to="/show" icon={faHandPointRight} text="Show" />
+      <NavLink to="/jobs" icon={faBriefcase} text="Jobs" />
 
       <div class="section user">
-        <Icon data={faBookmark} />
-        <NavLink to="/saved">
-          Saved Stories
-          <span class="saved-stories-count">({$savedStoryCount})</span>
-        </NavLink>
-
+        <NavLink
+          to="/saved"
+          icon={faBookmark}
+          text="Saved Stories"
+          complementary="({$savedStoryCount})"
+        />
       </div>
     </nav>
 
@@ -163,6 +140,13 @@
           </label>
         </li>
       </ul>
+    </div>
+
+    <div class="section info">
+      <div>
+        Svelte HN on
+        <a href="https://github.com/greengiraffe/svelte-hn">GitHub</a>
+      </div>
     </div>
 
   </div>

@@ -92,7 +92,7 @@ $palette: (
   // Sidebar colors
   --c-sidebar-bg: #{color("background", $mode)}; /* SideBar */
   --c-sidebar-link: #{color("textPrimary", $mode)};
-  --c-sidebar-link--hover: #{color("textPrimary", $mode)};
+  --c-sidebar-link-bg--hover: #{color("backgroundOffset", $mode)};
   --c-sidebar-icon: #{color("textPrimary", $mode)};
   --c-sidebar-icon--hover: #{color("textPrimary", $mode)};
   --c-sidebar-overlay: #{color("overlay", $mode)};
