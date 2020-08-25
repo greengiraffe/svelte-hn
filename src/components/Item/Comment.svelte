@@ -62,6 +62,10 @@
     word-wrap: break-word;
   }
 
+  :global(.comment a) {
+    text-decoration: underline;
+  }
+
   .header {
     display: flex;
     color: var(--c-comment-header);

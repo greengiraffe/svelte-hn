@@ -3,8 +3,6 @@
 
   export let icon
   export let title = ""
-
-  export let element
 </script>
 
 <style>
@@ -31,6 +29,6 @@
   }
 </style>
 
-<button class="button" {title} on:click bind:this={element}>
+<button class="button" {title} on:click>
   <Icon data={icon} scale="1" class="titlebar-icon" />
 </button>

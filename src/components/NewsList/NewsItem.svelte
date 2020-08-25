@@ -115,7 +115,8 @@
     grid-area: title;
     font-size: 1em;
     line-height: 1.2;
-    font-weight: 600;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     padding: 0.5em 0.5em 0 0;
   }
 

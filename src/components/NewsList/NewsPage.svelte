@@ -115,7 +115,7 @@
   <title>{storyType} · Svelte HN</title>
 </svelte:head>
 
-<TitleBar />
+<TitleBar isPrimaryHeading />
 
 <main>
   {#if $newsItems && !showLoadingIndicator}

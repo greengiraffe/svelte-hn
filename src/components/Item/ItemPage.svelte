@@ -74,6 +74,7 @@
     line-height: 1.4;
     color: var(--c-link);
     margin-right: 1.75em;
+    font-weight: 500;
   }
 
   .title a:focus {
@@ -116,6 +117,7 @@
   }
 
   .meta {
+    margin-top: 1em;
     color: var(--c-itempage-meta);
   }
 
@@ -155,11 +157,11 @@
 <main>
   <div class="item-header">
     {#if item.title}
-      <h2 class="title">
+      <h1 class="title">
         {#if item.domain}
           <a href={item.url}>{item.title}</a>
         {:else}{item.title}{/if}
-      </h2>
+      </h1>
       {#if item.domain}
         <div class="url">{item.domain}</div>
       {:else}
