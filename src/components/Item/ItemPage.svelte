@@ -9,6 +9,7 @@
     saveStory,
     removeSavedStory,
     currentStoryType,
+    updateSavedStory,
   } from "../../store"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
@@ -30,6 +31,9 @@
   onMount(async () => {
     currentStoryType.set("")
     item = await API.item(id)
+    if (liked) {
+      updateSavedStory(item)
+    }
   })
 
   beforeUpdate(() => {

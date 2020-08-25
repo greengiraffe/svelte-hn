@@ -1,5 +1,5 @@
 <script>
-  import NewsItem from "../NewsList/NewsItem.svelte"
+  import SavedItem from "./SavedItem.svelte"
 
   export let items
 </script>
@@ -7,7 +7,7 @@
 <ul class="items">
   {#each items as item, i}
     <li>
-      <NewsItem {item} />
+      <SavedItem {item} />
     </li>
   {/each}
 </ul>

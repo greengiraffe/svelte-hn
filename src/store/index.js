@@ -25,6 +25,8 @@ export function saveStory(item) {
     ...item,
     savedAt: Date.now(),
   }
+  delete updatedItem.time_ago
+
   savedStories.update((arr) => {
     return [updatedItem, ...arr]
   })
@@ -33,5 +35,21 @@ export function saveStory(item) {
 export function removeSavedStory(item) {
   savedStories.update((arr) => {
     return arr.filter((i) => i.id !== item.id)
+  })
+}
+
+export function updateSavedStory(updatedItem) {
+  savedStories.update((arr) => {
+    return arr.map((i) => {
+      if (i.id === updatedItem.id) {
+        const newItem = {
+          ...i,
+          ...updatedItem,
+        }
+        console.log(newItem)
+        return newItem
+      }
+      return i
+    })
   })
 }
