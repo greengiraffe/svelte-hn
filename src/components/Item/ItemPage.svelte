@@ -8,6 +8,7 @@
     savedStories,
     saveStory,
     removeSavedStory,
+    currentStoryType,
   } from "../../store"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
@@ -27,6 +28,7 @@
   $: dateHover = showAbsoluteDate ? item.time_ago : fullDate
 
   onMount(async () => {
+    currentStoryType.set("")
     item = await API.item(id)
   })
 

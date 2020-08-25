@@ -13,6 +13,10 @@
     text-align: left;
   }
 
+  .titlebar-menu-item + .titlebar-menu-item {
+    border-top: 1px solid var(--c-border);
+  }
+
   .titlebar-menu-item:hover {
     background-color: var(--c-border);
   }

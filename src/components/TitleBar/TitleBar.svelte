@@ -1,16 +1,10 @@
 <script>
   import { faBars } from "@fortawesome/free-solid-svg-icons"
+  import { link } from "svelte-navigator"
   import { currentStoryType, showSidebar } from "../../store"
-  import { validStoryType } from "../../api/storyTypes"
-  import { beforeUpdate } from "svelte"
   import TitleBarIconButton from "./TitleBarIconButton.svelte"
 
-  let isNewsList = true
-
-  beforeUpdate(() => {
-    const path = location.pathname.slice(1, location.pathname.length)
-    isNewsList = path.length === 0 || validStoryType(path)
-  })
+  export let isPrimaryHeading = false
 
   function toggleSidebar() {
     showSidebar.update((v) => !v)
@@ -29,7 +23,7 @@
     left: 0;
   }
 
-  h1 {
+  .title {
     color: var(--c-titlebar-text);
     display: inline;
     font-size: 1em;
@@ -37,13 +31,24 @@
     flex: 1;
     padding: 0.5em 0.5em;
   }
+
+  .title a {
+    color: var(--c-titlebar-text);
+  }
 </style>
 
 <header>
   <TitleBarIconButton icon={faBars} on:click={toggleSidebar} />
-  <h1>
-    Hacker News
-    {#if isNewsList && $currentStoryType}· {$currentStoryType}{/if}
-  </h1>
+  {#if isPrimaryHeading}
+    <h1 class="title">
+      <a href="/top" use:link>Hacker News</a>
+      {#if $currentStoryType}· {$currentStoryType}{/if}
+    </h1>
+  {:else}
+    <h2 class="title">
+      <a href="/top" use:link>Hacker News</a>
+      {#if $currentStoryType}· {$currentStoryType}{/if}
+    </h2>
+  {/if}
   <slot />
 </header>

@@ -1,8 +1,7 @@
 <script>
-  import { afterUpdate } from "svelte"
+  import { afterUpdate, onMount } from "svelte"
   import Icon from "svelte-awesome"
-  import { showSidebar } from "../../store"
-  import { savedStories } from "../../store"
+  import { showSidebar, savedStories, currentStoryType } from "../../store"
   import SavedItemList from "./SavedItemList.svelte"
   import {
     faSearch,
@@ -14,7 +13,10 @@
   import TitleBarMenuItem from "../TitleBar/TitleBarMenuItem.svelte"
 
   let searchValue = ""
-  let showMenu = false
+
+  onMount(() => {
+    currentStoryType.set("bookmarks")
+  })
 
   afterUpdate(() => {
     showSidebar.set(false)
