@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher, onMount } from "svelte"
+  import { createEventDispatcher } from "svelte"
   import { darkMode } from "../../store"
 
   export let comment

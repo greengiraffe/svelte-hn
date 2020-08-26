@@ -1,5 +1,8 @@
-const storyTypes = ["new", "top", "best", "ask", "show", "jobs"]
-
+/**
+ * Maps the name used in the app (keys) to the name used
+ * by the API (values)
+ * @type Object
+ */
 export const storyTypeMap = {
   top: "news",
   new: "newest",
@@ -9,8 +12,6 @@ export const storyTypeMap = {
   jobs: "jobs",
 }
 
-export default storyTypes
-
 export function validStoryType(storyType) {
-  return storyTypes.includes(storyType)
+  return Object.keys(storyTypeMap).includes(storyType)
 }

@@ -1,6 +1,5 @@
 <script>
   import { fade } from "svelte/transition"
-  import Icon from "svelte-awesome"
   import {
     faQuestion,
     faStar,

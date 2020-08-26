@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy, tick, beforeUpdate } from "svelte"
+  import { onMount, onDestroy, beforeUpdate } from "svelte"
   import { fade } from "svelte/transition"
   import Icon from "svelte-awesome"
   import { faBookmark } from "@fortawesome/free-solid-svg-icons"
