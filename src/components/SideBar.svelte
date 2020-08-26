@@ -14,7 +14,7 @@
   import {
     showSidebar,
     darkMode,
-    savedStoryCount,
+    bookmarkedStoryCount,
     expandAllComments,
   } from "../store"
 
@@ -103,10 +103,10 @@
 
       <div class="section user">
         <NavLink
-          to="/saved"
+          to="/bookmarks"
           icon={faBookmark}
-          text="Saved Stories"
-          complementary="({$savedStoryCount})"
+          text="Bookmarks"
+          complementary="({$bookmarkedStoryCount})"
         />
       </div>
     </nav>

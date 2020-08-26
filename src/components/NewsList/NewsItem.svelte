@@ -10,9 +10,9 @@
   import { beforeUpdate } from "svelte"
   import { get } from "svelte/store"
   import {
-    savedStories,
-    saveStory,
-    removeSavedStory,
+    bookmarks,
+    bookmark,
+    removeBookmark,
     selectedStory,
   } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
@@ -20,22 +20,22 @@
   export let item
   export let rank = false
 
-  let liked = false
+  let isBookmarked = false
   const localUrl = !item.domain ? item.url.replace("?id=", "/") : undefined
 
   beforeUpdate(() => {
-    // mark saved stories
-    liked = get(savedStories).some((story) => story.id === item.id)
+    // mark bookmarked stories
+    isBookmarked = get(bookmarks).some((story) => story.id === item.id)
   })
 
-  function like(event) {
+  function bookmarkThis(event) {
     if (event.type === "keydown" && event.code !== "Enter") return
-    if (liked) {
-      removeSavedStory(item)
+    if (isBookmarked) {
+      removeBookmark(item)
     } else {
-      saveStory(item)
+      bookmark(item)
     }
-    liked = !liked
+    isBookmarked = !isBookmarked
   }
 
   function setSelectedStory() {
@@ -85,8 +85,8 @@
     padding: 0.5em 0.5em;
   }
 
-  :global(.side:hover .bookmark-icon:not(.liked), .side:focus
-      .bookmark-icon:not(.liked)) {
+  :global(.side:hover .bookmark-icon:not(.isBookmarked), .side:focus
+      .bookmark-icon:not(.isBookmarked)) {
     opacity: 0.4;
   }
 
@@ -146,7 +146,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--c-newsitem-swipetoaction-text);
     background-color: var(--c-newsitem-swipetoaction-bg);
     padding: 0 1em;
@@ -164,10 +164,10 @@
     top: -1px;
     opacity: 0;
     transition: opacity 0.2s ease, fill 0.2s ease;
+    fill: var(--c-newsitem-bookmark);
   }
 
-  :global(.item .bookmark-icon.liked) {
-    fill: var(--c-newsitem-bookmark);
+  :global(.item .bookmark-icon.isBookmarked) {
     opacity: 1;
   }
 
@@ -177,7 +177,7 @@
   }
 </style>
 
-<SwipeToAction on:action-right={like} on:action-left={like}>
+<SwipeToAction on:action-right={bookmarkThis} on:action-left={bookmarkThis}>
   <div class="item" slot="content">
     <h2 class="title">
       {#if item.domain}
@@ -201,15 +201,15 @@
     {/if}
     <div
       class="side"
-      on:click={like}
-      on:keydown={like}
+      on:click={bookmarkThis}
+      on:keydown={bookmarkThis}
       tabindex="0"
-      aria-label={liked ? 'remove bookmark' : 'bookmark'}
+      aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
     >
       <Icon
         data={faBookmark}
-        class="bookmark-icon {liked ? 'liked' : ''}"
-        on:click={like}
+        class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
+        on:click={bookmarkThis}
       />
       {#if rank}
         <div class="rank">{rank}</div>
@@ -233,10 +233,10 @@
       </a>
     {/if}
   </div>
-  <div slot="action-right" class="action right" class:liked aria-hidden="true">
-    {#if liked}Don't save{:else}Save{/if}
+  <div slot="action-right" class="action right" class:isBookmarked aria-hidden="true">
+    {#if isBookmarked}Remove{:else}Bookmark{/if}
   </div>
-  <div slot="action-left" class="action left" class:liked aria-hidden="true">
-    {#if liked}Don't save{:else}Save{/if}
+  <div slot="action-left" class="action left" class:isBookmarked aria-hidden="true">
+    {#if isBookmarked}Remove{:else}Bookmark{/if}
   </div>
 </SwipeToAction>

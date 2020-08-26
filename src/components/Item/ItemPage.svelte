@@ -5,11 +5,11 @@
   import { faBookmark } from "@fortawesome/free-solid-svg-icons"
   import {
     selectedStory,
-    savedStories,
-    saveStory,
-    removeSavedStory,
+    bookmarks,
+    bookmark,
+    removeBookmark,
     currentStoryType,
-    updateSavedStory,
+    updateBookmark,
   } from "../../store"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
@@ -19,7 +19,7 @@
   export let id
 
   let item = $selectedStory
-  let liked = false
+  let isBookmarked = false
   let showAbsoluteDate = false
 
   $: fullDate = new Date(item.time * 1000).toLocaleString("en-GB")
@@ -31,18 +31,18 @@
   onMount(async () => {
     currentStoryType.set("")
     item = await API.item(id)
-    if (liked) {
-      updateSavedStory(item)
+    if (isBookmarked) {
+      updateBookmark(item)
     }
   })
 
   beforeUpdate(() => {
-    if (!liked) {
-      const savedStory = $savedStories.find((story) => story.id === item.id)
+    if (!isBookmarked) {
+      const savedStory = $bookmarks.find((story) => story.id === item.id)
       if (savedStory) {
-        // if item is already loaded, use it. Otherwise use the saved story item
+        // if item is already loaded, use it. Otherwise use the bookmarked story item
         item = item.title ? item : savedStory
-        liked = true
+        isBookmarked = true
       }
     }
   })
@@ -51,14 +51,14 @@
     selectedStory.set({})
   })
 
-  function like(event) {
+  function bookmarkThis(event) {
     if (event.type === "keydown" && event.code !== "Enter") return
-    if (liked) {
-      removeSavedStory(item)
+    if (isBookmarked) {
+      removeBookmark(item)
     } else {
-      saveStory(item)
+      bookmark(item)
     }
-    liked = !liked
+    isBookmarked = !isBookmarked
   }
 
   function toggleShowAbsoluteDate() {
@@ -95,16 +95,16 @@
     margin-bottom: 2em;
   }
 
-  .like-icon {
+  .bookmark-icon {
     position: absolute;
     top: -0.6em;
     right: 1em;
     transition: top 200ms ease;
   }
 
-  .like-icon:hover,
-  .like-icon:focus,
-  .like-icon.liked {
+  .bookmark-icon:hover,
+  .bookmark-icon:focus,
+  .bookmark-icon.isBookmarked {
     top: -2px;
   }
 
@@ -112,7 +112,7 @@
     fill: var(--c-itempage-bookmark);
   }
 
-  :global(.item-header .bookmark-icon.liked) {
+  :global(.item-header .bookmark-icon.isBookmarked) {
     fill: var(--c-itempage-bookmark--active);
   }
 
@@ -172,16 +172,16 @@
         <div aria-hidden class="url">——</div>
       {/if}
       <div
-        class="like-icon"
-        class:liked
-        on:click={like}
+        class="bookmark-icon"
+        class:isBookmarked
+        on:click={bookmarkThis}
         tabindex="0"
-        aria-label={liked ? 'remove bookmark' : 'bookmark'}
+        aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
       >
         <Icon
           scale={2}
           data={faBookmark}
-          class="bookmark-icon {liked ? 'liked' : ''}"
+          class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
         />
       </div>
 

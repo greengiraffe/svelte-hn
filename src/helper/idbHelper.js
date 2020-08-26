@@ -1,8 +1,8 @@
 import { get, set } from "idb-keyval"
-import { savedStories, darkMode, expandAllComments } from "../store"
+import { bookmarks, darkMode, expandAllComments } from "../store"
 
 const idbManagedStores = {
-  savedStories,
+  bookmarks,
   darkMode,
   expandAllComments,
 }

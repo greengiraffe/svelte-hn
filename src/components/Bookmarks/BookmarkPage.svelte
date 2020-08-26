@@ -1,8 +1,8 @@
 <script>
   import { afterUpdate, onMount } from "svelte"
   import Icon from "svelte-awesome"
-  import { showSidebar, savedStories, currentStoryType } from "../../store"
-  import SavedItemList from "./SavedItemList.svelte"
+  import { showSidebar, bookmarks, currentStoryType } from "../../store"
+  import BookmarkedItemList from "./BookmarkedItemList.svelte"
   import {
     faSearch,
     faTrash,
@@ -22,7 +22,7 @@
     showSidebar.set(false)
   })
 
-  $: filteredStories = $savedStories.filter((item) => {
+  $: filteredStories = $bookmarks.filter((item) => {
     const trimmedSearchValue = searchValue.trim().toLowerCase()
 
     return Object.values(item).some((val) => {
@@ -35,10 +35,10 @@
 
   function removeAllSavedStories() {
     const remove = confirm(
-      `Are you sure you want to remove all ${$savedStories.length} bookmarks?`
+      `Are you sure you want to remove all ${$bookmarks.length} bookmarks?`
     )
     if (remove) {
-      savedStories.set([])
+      bookmarks.set([])
     }
   }
 
@@ -47,7 +47,7 @@
     element.setAttribute(
       "href",
       "data:application/json;charset=utf-8," +
-        encodeURIComponent(JSON.stringify($savedStories))
+        encodeURIComponent(JSON.stringify($bookmarks))
     )
     element.setAttribute("download", "svelte-hn-bookmarks.json")
     element.style.display = "none"
@@ -110,7 +110,7 @@
 </TitleBar>
 
 <main>
-  {#if $savedStories.length > 0}
+  {#if $bookmarks.length > 0}
     <div class="search-wrapper">
       <label class="search-label" for="search">
         <Icon data={faSearch} />
@@ -123,12 +123,12 @@
         bind:value={searchValue}
       />
     </div>
-    <SavedItemList items={filteredStories} />
+    <BookmarkedItemList items={filteredStories} />
     <!-- <div class="action-wrapper">
     </div> -->
   {:else}
     <div class="empty-wrapper">
-      <p>No stories saved.</p>
+      <p>No stories bookmarked.</p>
       <p>
         Add a bookmark by dragging a story in the list left or right.
         Alternatively click the bookmark icon that appears when hovering over

@@ -3,12 +3,11 @@
   import { Router, Route } from "svelte-navigator"
   export let url = ""
 
-  import TitleBar from "./components/TitleBar/TitleBar.svelte"
   import SideBar from "./components/SideBar.svelte"
   import NewsPage from "./components/NewsList/NewsPage.svelte"
   import ItemPage from "./components/Item/ItemPage.svelte"
   import NotFoundPage from "./components/NotFoundPage.svelte"
-  import SavedItemsPage from "./components/SavedItems/SavedItemsPage.svelte"
+  import BookmarkPage from "./components/Bookmarks/BookmarkPage.svelte"
 
   import { subscribeStoresFromIDB, initStoresFromIDB } from "./helper/idbHelper"
 
@@ -38,7 +37,7 @@
 <Router {url}>
   <SideBar />
   <Route path="/" component={NewsPage} storyType="top" />
-  <Route path="/saved" component={SavedItemsPage} />
+  <Route path="/bookmarks" component={BookmarkPage} />
   <Route path="/:storyType" component={NewsPage} />
   <Route path="/item/:id" component={ItemPage} />
   <Route path="/not-found" component={NotFoundPage} />

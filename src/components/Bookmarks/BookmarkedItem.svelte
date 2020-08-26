@@ -8,15 +8,12 @@
     faTrash,
   } from "@fortawesome/free-solid-svg-icons"
   import { navigate } from "svelte-navigator"
-  import { beforeUpdate } from "svelte"
   import { fade } from "svelte/transition"
-  import { get } from "svelte/store"
-  import { savedStories, removeSavedStory, selectedStory } from "../../store"
+  import { removeBookmark, selectedStory } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
 
   export let item
 
-  let liked = true
   let showRemoveConfirmation = false
 
   const localUrl = !item.domain ? item.url.replace("?id=", "/") : undefined
@@ -29,11 +26,6 @@
     minute: "numeric",
   })
 
-  beforeUpdate(() => {
-    // mark saved stories
-    liked = get(savedStories).some((story) => story.id === item.id)
-  })
-
   function showConfirmRemove(event) {
     if (event.type === "keydown" && event.code !== "Enter") return
     showRemoveConfirmation = true
@@ -43,9 +35,9 @@
     showRemoveConfirmation = false
   }
 
-  function removeBookmark() {
+  function removeThisBookmark() {
     showRemoveConfirmation = false
-    removeSavedStory(item)
+    removeBookmark(item)
   }
 
   function setSelectedStory() {
@@ -124,10 +116,6 @@
     margin-left: 1em;
   }
 
-  :global(.confirm-remove button .trash-icon) {
-    margin: 0 0.25em -1px 0.25em;
-  }
-
   .side {
     grid-area: side;
     position: relative;
@@ -139,11 +127,6 @@
     width: 100%;
     font-size: 0.8em;
     padding: 0.5em 0.5em;
-  }
-
-  :global(.side:hover .bookmark-icon:not(.liked), .side:focus
-      .bookmark-icon:not(.liked)) {
-    opacity: 0.4;
   }
 
   .url {
@@ -198,6 +181,20 @@
     height: 100%;
   }
 
+  /* Global rules also defined in NewsItem component,
+    left here commented out for reference
+   */
+
+  /*
+  :global(.confirm-remove button .trash-icon) {
+    margin: 0 0.25em -1px 0.25em;
+  }
+
+  :global(.side:hover .bookmark-icon:not(.isBookmarked), .side:focus
+    .bookmark-icon:not(.isBookmarked)) {
+    opacity: 0.4;
+  }
+  
   :global(.comments-icon) {
     vertical-align: sub;
     margin-left: 5px;
@@ -211,7 +208,7 @@
     transition: opacity 0.2s ease, fill 0.2s ease;
   }
 
-  :global(.item .bookmark-icon.liked) {
+  :global(.item .bookmark-icon.isBookmarked) {
     fill: var(--c-newsitem-bookmark);
     opacity: 1;
   }
@@ -220,6 +217,7 @@
     fill: var(--c-newsitem-job-icon);
     margin-top: 1em;
   }
+  */
 </style>
 
 <SwipeToAction
@@ -231,7 +229,7 @@
       {#if showRemoveConfirmation}
         <div class="confirm-remove" in:fade={{ duration: 150 }}>
           Remove this bookmark?
-          <button on:click={removeBookmark}>
+          <button on:click={removeThisBookmark}>
             <Icon data={faTrash} class="trash-icon" />
             Remove
           </button>
@@ -244,11 +242,11 @@
         on:click={showConfirmRemove}
         on:keydown={showConfirmRemove}
         tabindex="0"
-        aria-label={liked ? 'remove bookmark' : 'bookmark'}
+        aria-label="remove bookmark"
       >
         <Icon
           data={faBookmark}
-          class="bookmark-icon {liked ? 'liked' : ''}"
+          class="bookmark-icon isBookmarked"
           on:click={showConfirmRemove}
         />
         {#if item.points}
@@ -270,7 +268,11 @@
       </h2>
 
       <div class="url">
-        {(item.domain + ' · ' || '') + ('posted by ' + item.user + ' · ' || '') + dateString}
+        {[
+          (item.domain || ''),
+          (item.user ? ('posted by ' + item.user) : ''),
+          dateString
+        ].join(' · ')}
       </div>
 
       <div class="meta">
@@ -290,11 +292,13 @@
       {/if}
     </div>
   </div>
-  <div slot="action-right" class="action right" class:liked aria-hidden="true">
-    {#if liked}Don't save{:else}Save{/if}
+
+  <div slot="action-right" class="action right isBookmarked" aria-hidden="true">
+    Remove
   </div>
-  <div slot="action-left" class="action left" class:liked aria-hidden="true">
-    {#if liked}Don't save{:else}Save{/if}
+
+  <div slot="action-left" class="action left isBookmarked" aria-hidden="true">
+    Remove
   </div>
 
 </SwipeToAction>

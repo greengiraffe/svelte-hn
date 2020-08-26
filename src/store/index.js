@@ -13,33 +13,33 @@ export const newsItems = writable([])
 export const expandAllComments = writable(false)
 
 // Saved stories
-export const savedStories = writable([])
-export const savedStoryCount = derived(
-  savedStories,
-  ($savedStories) => $savedStories.length
+export const bookmarks = writable([])
+export const bookmarkedStoryCount = derived(
+  bookmarks,
+  ($bookmarks) => $bookmarks.length
 )
 
 // Saved stories -- helper functions
-export function saveStory(item) {
+export function bookmark(item) {
   const updatedItem = {
     ...item,
     savedAt: Date.now(),
   }
   delete updatedItem.time_ago
 
-  savedStories.update((arr) => {
+  bookmarks.update((arr) => {
     return [updatedItem, ...arr]
   })
 }
 
-export function removeSavedStory(item) {
-  savedStories.update((arr) => {
+export function removeBookmark(item) {
+  bookmarks.update((arr) => {
     return arr.filter((i) => i.id !== item.id)
   })
 }
 
-export function updateSavedStory(updatedItem) {
-  savedStories.update((arr) => {
+export function updateBookmark(updatedItem) {
+  bookmarks.update((arr) => {
     return arr.map((i) => {
       if (i.id === updatedItem.id) {
         const newItem = {
