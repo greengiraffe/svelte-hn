@@ -1,10 +1,13 @@
 <script>
   import { faBars } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-navigator"
-  import { currentStoryType, showSidebar } from "../../store"
+  import { showSidebar } from "../../store"
   import TitleBarIconButton from "./TitleBarIconButton.svelte"
 
   export let isPrimaryHeading = false
+  export let text
+
+  $: title = "Hacker News" + (text ? ` · ${text}` : "")
 
   function toggleSidebar() {
     showSidebar.update((v) => !v)
@@ -41,13 +44,11 @@
   <TitleBarIconButton icon={faBars} on:click={toggleSidebar} />
   {#if isPrimaryHeading}
     <h1 class="title">
-      <a href="/top" use:link>Hacker News</a>
-      {#if $currentStoryType}· {$currentStoryType}{/if}
+      <a href="/top" use:link>{title}</a>
     </h1>
   {:else}
     <h2 class="title">
-      <a href="/top" use:link>Hacker News</a>
-      {#if $currentStoryType}· {$currentStoryType}{/if}
+      <a href="/top" use:link>{title}</a>
     </h2>
   {/if}
   <slot />

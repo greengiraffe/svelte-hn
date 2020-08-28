@@ -115,11 +115,15 @@
   <title>{storyType} · Svelte HN</title>
 </svelte:head>
 
-<TitleBar isPrimaryHeading />
+<TitleBar isPrimaryHeading text={$currentStoryType} />
 
 <main>
   {#if $newsItems && !showLoadingIndicator}
-    <NewsItemList items={$newsItems} delayTransition={currentPage === 1} />
+    <NewsItemList
+      items={$newsItems}
+      delayTransition={currentPage === 1}
+      showTransition={!$newsItems}
+    />
     {#if hasMorePages}
       <div class="more-wrapper">
         <button class="more-button" on:click={loadNextPage}>Load more</button>

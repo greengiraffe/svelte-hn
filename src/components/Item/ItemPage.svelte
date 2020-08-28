@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy, beforeUpdate } from "svelte"
   import { fade } from "svelte/transition"
+  import { quadInOut } from "svelte/easing"
   import Icon from "svelte-awesome"
   import { faBookmark } from "@fortawesome/free-solid-svg-icons"
   import {
@@ -8,9 +9,9 @@
     bookmarks,
     bookmark,
     removeBookmark,
-    currentStoryType,
     updateBookmark,
   } from "../../store"
+  import { fadeScale } from "../../helper/transitions"
   import API from "../../api"
   import CommentTree from "./CommentTree.svelte"
   import CommentTreeLoading from "./CommentTreeLoading.svelte"
@@ -22,6 +23,8 @@
   let isBookmarked = false
   let showAbsoluteDate = false
 
+  let showLoading = false
+
   $: fullDate = new Date(item.time * 1000).toLocaleString("en-GB")
   $: dateString = showAbsoluteDate
     ? `posted on ${fullDate}`
@@ -29,7 +32,12 @@
   $: dateHover = showAbsoluteDate ? item.time_ago : fullDate
 
   onMount(async () => {
-    currentStoryType.set("")
+    setTimeout(() => {
+      if (!item.comments) {
+        console.log()
+        showLoading = true
+      }
+    }, 200)
     item = await API.item(id)
     if (isBookmarked) {
       updateBookmark(item)
@@ -135,7 +143,7 @@
     }
   }
 
-  .comments {
+  .comments-wrapper {
     position: relative;
   }
 
@@ -156,7 +164,7 @@
   <title>{item.title || 'Loading...'} · Svelte HN</title>
 </svelte:head>
 
-<TitleBar />
+<TitleBar text="" />
 
 <main>
   <div class="item-header">
@@ -205,17 +213,27 @@
     {/if}
   </div>
 
-  <div class="comments" in:fade={{ duration: 50 }}>
+  <div class="comments-wrapper">
     {#if item.comments}
-      {#if item.comments.length > 0}
-        <CommentTree comments={item.comments} />
-      {:else}
-        <p class="no-comments">There are no comments.</p>
-      {/if}
+      <div
+        class="comments"
+        in:fadeScale={{ duration: showLoading ? 200 : 0, delay: showLoading ? 200 : 0, baseScale: 0.97, easing: quadInOut }}
+      >
+        {#if item.comments.length > 0}
+          <CommentTree comments={item.comments} />
+        {:else}
+          <p class="no-comments">There are no comments.</p>
+        {/if}
+      </div>
     {:else}
-      <div class="loading-wrapper">
-        <CommentTreeLoading itemCount={item.comments_count || 5} />
+      <div
+        class="loading-wrapper"
+        in:fade={{ duration: 100, delay: 200 }}
+        out:fadeScale={{ duration: 200, baseScale: 0.97, easing: quadInOut }}
+      >
+        <CommentTreeLoading itemCount={item.comments_count} />
       </div>
     {/if}
   </div>
+
 </main>

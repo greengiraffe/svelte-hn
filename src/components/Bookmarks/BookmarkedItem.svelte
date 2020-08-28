@@ -25,6 +25,11 @@
     hour: "numeric",
     minute: "numeric",
   })
+  const metaInfoString = [
+    item.domain || "",
+    item.user ? "posted by " + item.user : "",
+    dateString,
+  ].join(" · ")
 
   function showConfirmRemove(event) {
     if (event.type === "keydown" && event.code !== "Enter") return
@@ -249,9 +254,11 @@
           class="bookmark-icon isBookmarked"
           on:click={showConfirmRemove}
         />
+
         {#if item.points}
           <div class="points">{item.points}p</div>
         {/if}
+
         {#if item.type === 'job'}
           <Icon data={faBriefcase} class="briefcase-icon" />
         {/if}
@@ -267,18 +274,8 @@
         {/if}
       </h2>
 
-      <div class="url">
-        {[
-          (item.domain || ''),
-          (item.user ? ('posted by ' + item.user) : ''),
-          dateString
-        ].join(' · ')}
-      </div>
-
-      <div class="meta">
-        <span>{timeAgo(item.savedAt)}</span>
-
-      </div>
+      <div class="url">{metaInfoString}</div>
+      <div class="meta">{timeAgo(item.savedAt)}</div>
 
       {#if item.type !== 'job'}
         <a

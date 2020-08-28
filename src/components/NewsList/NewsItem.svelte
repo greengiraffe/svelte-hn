@@ -233,10 +233,20 @@
       </a>
     {/if}
   </div>
-  <div slot="action-right" class="action right" class:isBookmarked aria-hidden="true">
+  <div
+    slot="action-right"
+    class="action right"
+    class:isBookmarked
+    aria-hidden="true"
+  >
     {#if isBookmarked}Remove{:else}Bookmark{/if}
   </div>
-  <div slot="action-left" class="action left" class:isBookmarked aria-hidden="true">
+  <div
+    slot="action-left"
+    class="action left"
+    class:isBookmarked
+    aria-hidden="true"
+  >
     {#if isBookmarked}Remove{:else}Bookmark{/if}
   </div>
 </SwipeToAction>

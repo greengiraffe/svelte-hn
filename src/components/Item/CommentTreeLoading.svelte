@@ -1,10 +1,12 @@
 <script>
   import CommentSkeleton from "./CommentSkeleton.svelte"
 
-  export let itemCount = 5
-  
-  const maxItemCount = 10
-  const count = Math.min(itemCount, maxItemCount)
+  const maxCount = 15
+  const minCount = 6
+
+  export let itemCount = minCount
+
+  const count = Math.min(Math.max(itemCount, minCount), maxCount)
 </script>
 
 <style>

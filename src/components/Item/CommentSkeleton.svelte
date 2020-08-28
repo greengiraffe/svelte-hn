@@ -1,6 +1,4 @@
 <script>
-  import { fade } from "svelte/transition"
-
   export let index = 0
 </script>
 
@@ -16,6 +14,7 @@
     height: 9.5em;
     position: relative;
     background-color: var(--c-background);
+    border-top: 1px solid var(--c-border);
   }
 
   .skeleton::after {
@@ -28,19 +27,14 @@
     position: absolute;
     border-top: 1px solid var(--c-newsitem-border);
     background-repeat: no-repeat;
-    background-image:
-      /* layer 3, line3 */ linear-gradient(
+    background-image: linear-gradient(
         var(--c-newsitem-meta) 100%,
         transparent 0
       ),
-      /* layer 3, line3 */
-        linear-gradient(var(--c-newsitem-meta) 100%, transparent 0),
-      /* layer 2, line2 */
-        linear-gradient(var(--c-newsitem-url) 100%, transparent 0),
-      /* layer 2, line1 */
-        linear-gradient(var(--c-newsitem-url) 100%, transparent 0),
-      /* layer 1, username */
-        linear-gradient(var(--c-newsitem-title) 100%, transparent 0);
+      linear-gradient(var(--c-newsitem-meta) 100%, transparent 0),
+      linear-gradient(var(--c-newsitem-url) 100%, transparent 0),
+      linear-gradient(var(--c-newsitem-url) 100%, transparent 0),
+      linear-gradient(var(--c-newsitem-title) 100%, transparent 0);
     background-size: 7em 1em, calc(75% - 1em) 1em, calc(90% - 1em) 1em,
       calc(95% - 1em) 1em, 9em 1em;
     background-position: 1em 7.5em, 1em 5.5em, 1em 4.25em, 1em 3em, 1em 1em;
@@ -50,8 +44,4 @@
   }
 </style>
 
-<div
-  class="skeleton"
-  style="--delay: {0.1 * index}s;"
-  out:fade={{ duration: 50, delay: 10 * index }}
-/>
+<div class="skeleton" style="--delay: {0.1 * index}s;" />
