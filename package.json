@@ -19,7 +19,6 @@
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/svelte": "^3.0.0",
     "babel-jest": "^26.3.0",
-    "delayed-scroll-restoration-polyfill": "^0.1.1",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
