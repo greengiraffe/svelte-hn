@@ -1,7 +1,13 @@
 <script>
-  import { afterUpdate, onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import Icon from "svelte-awesome"
-  import { showSidebar, bookmarks, currentStoryType } from "../../store"
+  import {
+    bookmarks,
+    currentStoryType,
+    selectedStory,
+    lastScrollY,
+    scrollY,
+  } from "../../store"
   import BookmarkedItemList from "./BookmarkedItemList.svelte"
   import {
     faSearch,
@@ -16,10 +22,19 @@
 
   onMount(() => {
     currentStoryType.set("bookmarks")
+    if ($selectedStory.id) {
+      const itemToFocus = document.querySelector(
+        `a[href*='${$selectedStory.id}'`
+      )
+      if (itemToFocus) itemToFocus.focus()
+    }
+    window.scrollTo({ top: $lastScrollY })
+    lastScrollY.set(0)
+    selectedStory.set({})
   })
 
-  afterUpdate(() => {
-    showSidebar.set(false)
+  onDestroy(() => {
+    lastScrollY.set($scrollY)
   })
 
   $: filteredStories = $bookmarks.filter((item) => {

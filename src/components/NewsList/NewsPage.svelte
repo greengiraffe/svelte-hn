@@ -1,8 +1,14 @@
 <script>
-  import { afterUpdate } from "svelte"
+  import { onDestroy, onMount, tick } from "svelte"
   import { navigate } from "svelte-navigator"
   import Icon from "svelte-awesome"
-  import { newsItems, showSidebar, currentStoryType } from "../../store"
+  import {
+    newsItems,
+    currentStoryType,
+    selectedStory,
+    scrollY,
+    lastScrollY,
+  } from "../../store"
   import API from "../../api"
   import NewsItemsLoading from "./NewsItemsLoading.svelte"
   import { InvalidStoryTypeError } from "../../api/errors"
@@ -12,7 +18,6 @@
 
   export let storyType // passed by svelte-navigator from App.svelte
 
-  let isLoading = false
   let showLoadingIndicator = false
   let currentPage = 1
   let hasMorePages = true
@@ -21,10 +26,27 @@
 
   $: if (storyType !== $currentStoryType) loadInitialItems()
 
+  onMount(() => {
+    if ($selectedStory.id) {
+      const itemToFocus = document.querySelector(
+        `a[href*='${$selectedStory.id}'`
+      )
+      if (itemToFocus) itemToFocus.focus()
+    }
+    window.scrollTo({ top: $lastScrollY })
+    lastScrollY.set(0)
+    selectedStory.set({})
+  })
+
+  onDestroy(() => {
+    lastScrollY.set($scrollY)
+  })
+
   function loadInitialItems() {
+    scrollToTop()
     const LOADING_INDICATOR_DELAY = 200 // ms
+    let isLoading = true
     currentPage = 1
-    isLoading = true
     hasMorePages = true
 
     // show loading indicator if the content is still
@@ -41,7 +63,6 @@
     // fetch stories
     API.stories(storyType, currentPage)
       .then((res) => {
-        window.scrollTo(0, 0)
         newsItems.set(res)
         isLoading = false
         showLoadingIndicator = false
@@ -54,19 +75,21 @@
       })
   }
 
-  function loadNextPage() {
+  async function loadNextPage() {
     currentPage += 1
 
-    // TODO set focus
-
-    // add empty items while loading
+    // add empty items while loading to show skeleton loaders
     const currentItemCount = $newsItems.length
     newsItems.update((items) => {
       return [...items, ...Array(PAGE_SIZE)]
     })
 
+    // keep scrollY for scroll restoration after new items
+    // were loaded
+    const currentScrollY = $scrollY
+
     API.stories($currentStoryType, currentPage)
-      .then((res) => {
+      .then(async (res) => {
         if (res.length < PAGE_SIZE) {
           hasMorePages = false
         }
@@ -75,8 +98,14 @@
           return [...items.slice(0, currentItemCount), ...res]
         })
 
-        isLoading = false
-        showLoadingIndicator = false
+        // Focus next new element after they have been rendered
+        await tick()
+        const nextFocusable = document.querySelectorAll(".item button")[
+          PAGE_SIZE * (currentPage - 1)
+        ]
+        nextFocusable.focus()
+        // Prevent browser from scrolling due to the newly set focus
+        window.scrollTo({ top: currentScrollY })
       })
       .catch((err) => {
         console.error(err)
@@ -86,10 +115,6 @@
   function scrollToTop() {
     window.scrollTo(0, 0)
   }
-
-  afterUpdate(() => {
-    showSidebar.set(false)
-  })
 </script>
 
 <style>

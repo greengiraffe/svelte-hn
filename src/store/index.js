@@ -1,9 +1,21 @@
 import { writable, derived } from "svelte/store"
 
-// Random stores
-export const showSidebar = writable(false)
+export const sidebarVisible = writable(false)
+export function hideSidebar() {
+  sidebarVisible.set(false)
+}
+export function showSidebar() {
+  sidebarVisible.set(true)
+}
+export function toggleSidebar() {
+  sidebarVisible.update(v => !v)
+}
+
 export const darkMode = writable(false)
 export const currentStoryType = writable("")
+export const scrollY = writable(0)
+export const lastScrollY = writable(0)
+export const lastFocused = writable(undefined)
 
 export const selectedStory = writable({})
 
@@ -46,7 +58,6 @@ export function updateBookmark(updatedItem) {
           ...i,
           ...updatedItem,
         }
-        console.log(newItem)
         return newItem
       }
       return i

@@ -9,12 +9,14 @@
   } from "@fortawesome/free-solid-svg-icons"
   import { navigate } from "svelte-navigator"
   import { fade } from "svelte/transition"
-  import { removeBookmark, selectedStory } from "../../store"
+  import { removeBookmark, selectedStory, lastFocused } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
+  import { tick } from "svelte"
 
   export let item
 
   let showRemoveConfirmation = false
+  let removeBtn
 
   const dateString = new Date(item.time * 1000).toLocaleString("en-GB", {
     weekday: "short",
@@ -30,14 +32,12 @@
     dateString,
   ].join(" · ")
 
-  function showConfirmRemove(event) {
-    if (event.type === "keydown" && event.code !== "Enter") return
+  const showConfirmRemove = async () => {
     showRemoveConfirmation = true
+    await tick()
+    removeBtn.focus()
   }
-
-  function hideConfirmRemove() {
-    showRemoveConfirmation = false
-  }
+  const hideConfirmRemove = () => (showRemoveConfirmation = false)
 
   function removeThisBookmark() {
     showRemoveConfirmation = false
@@ -46,6 +46,7 @@
 
   function setSelectedStory(event) {
     selectedStory.set(item)
+    lastFocused.set(item.id)
     navigate(event.target.href)
   }
 
@@ -121,6 +122,7 @@
   }
 
   .side {
+    border-radius: 0;
     grid-area: side;
     position: relative;
     display: flex;
@@ -232,19 +234,17 @@
     <div class="item">
       {#if showRemoveConfirmation}
         <div class="confirm-remove" in:fade={{ duration: 150 }}>
-          Remove this bookmark?
-          <button on:click={removeThisBookmark}>
+          <button on:click={removeThisBookmark} bind:this={removeBtn}>
             <Icon data={faTrash} class="trash-icon" />
-            Remove
+            Remove Bookmark
           </button>
           <button on:click={hideConfirmRemove}>Cancel</button>
         </div>
       {/if}
 
-      <div
+      <button
         class="side"
         on:click={showConfirmRemove}
-        on:keydown={showConfirmRemove}
         tabindex="0"
         aria-label="remove bookmark"
       >
@@ -261,7 +261,7 @@
         {#if item.type === 'job'}
           <Icon data={faBriefcase} class="briefcase-icon" />
         {/if}
-      </div>
+      </button>
 
       <h2 class="title">
         {#if item.domain}

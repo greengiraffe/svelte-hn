@@ -1,6 +1,7 @@
 <script>
   import { Link } from "svelte-navigator"
   import Icon from "svelte-awesome"
+  import { hideSidebar } from "../store"
 
   export let to
   export let classNames = []
@@ -10,7 +11,7 @@
 
   // used to pass props from svelte-navigator Link component
   // to the underlying <a> element.
-  function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
+  function getProps({ isCurrent }) {
     const classes = "nav-link " + classNames.join(" ")
     if (isCurrent) {
       return { class: classes + " active" }
@@ -54,7 +55,7 @@
   }
 </style>
 
-<Link {to} {getProps}>
+<Link {to} {getProps} on:click={hideSidebar}>
   <span class="link-icon">
     {#if icon}
       <Icon data={icon} />

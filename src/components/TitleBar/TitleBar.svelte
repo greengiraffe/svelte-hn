@@ -1,17 +1,13 @@
 <script>
   import { faBars } from "@fortawesome/free-solid-svg-icons"
   import { link } from "svelte-navigator"
-  import { showSidebar } from "../../store"
+  import { toggleSidebar } from "../../store"
   import TitleBarIconButton from "./TitleBarIconButton.svelte"
 
   export let isPrimaryHeading = false
   export let text
 
   $: title = "Hacker News" + (text ? ` · ${text}` : "")
-
-  function toggleSidebar() {
-    showSidebar.update((v) => !v)
-  }
 </script>
 
 <style>

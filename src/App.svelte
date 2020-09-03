@@ -9,6 +9,7 @@
   import NotFoundPage from "./components/NotFoundPage.svelte"
   import BookmarkPage from "./components/Bookmarks/BookmarkPage.svelte"
 
+  import { scrollY } from "./store"
   import { subscribeStoresFromIDB, initStoresFromIDB } from "./helper/idbHelper"
 
   let unsubscribeIDBStores
@@ -31,13 +32,16 @@
     position: relative;
     width: 100%;
     height: calc(100% - 3em);
+    overflow-anchor: none; /* Prevents scroll-anchoring (https://stackoverflow.com/q/42205462) */
   }
 </style>
 
-<Router {url}>
+<svelte:window bind:scrollY={$scrollY} />
+
+<Router {url} primary={false}>
   <SideBar />
-  <Route path="/" component={NewsPage} storyType="top" primary={false} />
-  <Route path="/:storyType" component={NewsPage} primary={false} />
+  <Route path="/" component={NewsPage} storyType="top" />
+  <Route path="/:storyType" component={NewsPage} />
   <Route path="/bookmarks" component={BookmarkPage} />
   <Route path="/item" component={ItemPage} />
   <Route path="/not-found" component={NotFoundPage} />

@@ -12,14 +12,12 @@
   import NavLink from "./NavLink.svelte"
   import { slide } from "../transitions"
   import {
-    showSidebar,
+    sidebarVisible,
+    hideSidebar,
     darkMode,
     bookmarkedStoryCount,
     expandAllComments,
   } from "../store"
-
-  // disable scrolling when sidebar is shown
-  $: document.body.style.overflow = $showSidebar ? "hidden" : "unset"
 
   // toggle dark mode
   $: $darkMode
@@ -91,7 +89,7 @@
   }
 </style>
 
-{#if $showSidebar}
+{#if $sidebarVisible}
   <div transition:slide class={'sidebar'}>
     <nav>
       <NavLink to="/top" icon={faStar} text="Top" />
@@ -149,11 +147,5 @@
     </div>
 
   </div>
-  <div
-    transition:fade
-    class="fade-background"
-    on:click={() => {
-      showSidebar.set(false)
-    }}
-  />
+  <div transition:fade class="fade-background" on:click={hideSidebar} />
 {/if}

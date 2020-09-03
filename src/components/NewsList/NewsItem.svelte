@@ -14,6 +14,7 @@
     bookmark,
     removeBookmark,
     selectedStory,
+    lastFocused,
   } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
 
@@ -21,15 +22,13 @@
   export let rank = false
 
   let isBookmarked = false
-  const localUrl = !item.domain ? item.url.replace("?id=", "/") : undefined
 
   beforeUpdate(() => {
     // mark bookmarked stories
     isBookmarked = get(bookmarks).some((story) => story.id === item.id)
   })
 
-  function bookmarkThis(event) {
-    if (event.type === "keydown" && event.code !== "Enter") return
+  function bookmarkThis() {
     if (isBookmarked) {
       removeBookmark(item)
     } else {
@@ -40,6 +39,7 @@
 
   function setSelectedStory(event) {
     selectedStory.set(item)
+    lastFocused.set(item.id)
     navigate(event.target.href)
   }
 </script>
@@ -74,6 +74,7 @@
 
   .side {
     grid-area: side;
+    border-radius: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -179,6 +180,27 @@
 
 <SwipeToAction on:action-right={bookmarkThis} on:action-left={bookmarkThis}>
   <div class="item" slot="content">
+    <button
+      class="side"
+      on:click={bookmarkThis}
+      aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
+    >
+      <Icon
+        data={faBookmark}
+        class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
+        on:click={bookmarkThis}
+      />
+      {#if rank}
+        <div class="rank">{rank}</div>
+      {/if}
+      {#if item.points}
+        <div class="points">{item.points}p</div>
+      {/if}
+      {#if item.type === 'job'}
+        <Icon data={faBriefcase} class="briefcase-icon" />
+      {/if}
+    </button>
+
     <h2 class="title">
       {#if item.domain}
         <a href={item.url}>{item.title}</a>
@@ -199,28 +221,6 @@
     {:else}
       <div aria-hidden class="no-url">——</div>
     {/if}
-    <div
-      class="side"
-      on:click={bookmarkThis}
-      on:keydown={bookmarkThis}
-      tabindex="0"
-      aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
-    >
-      <Icon
-        data={faBookmark}
-        class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
-        on:click={bookmarkThis}
-      />
-      {#if rank}
-        <div class="rank">{rank}</div>
-      {/if}
-      {#if item.points}
-        <div class="points">{item.points}p</div>
-      {/if}
-      {#if item.type === 'job'}
-        <Icon data={faBriefcase} class="briefcase-icon" />
-      {/if}
-    </div>
 
     {#if item.type !== 'job'}
       <a

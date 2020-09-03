@@ -32,7 +32,7 @@
 
 <button class="titlebar-menu-item" on:click>
   <Icon data={icon} class="icon" />
-  <slot>
-    <span>{text}</span>
-  </slot>
+  <span>
+    <slot>{text}</slot>
+  </span>
 </button>

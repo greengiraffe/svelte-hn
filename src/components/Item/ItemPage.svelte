@@ -2,8 +2,10 @@
   import { onMount, onDestroy, beforeUpdate } from "svelte"
   import { fade } from "svelte/transition"
   import { quadInOut } from "svelte/easing"
+  import { useFocus } from "svelte-navigator"
   import Icon from "svelte-awesome"
   import { faBookmark } from "@fortawesome/free-solid-svg-icons"
+  import {
   import {
     selectedStory,
     bookmarks,
@@ -17,12 +19,10 @@
   import CommentTreeLoading from "./CommentTreeLoading.svelte"
   import TitleBar from "../TitleBar/TitleBar.svelte"
 
-  export let id
-
   let item = $selectedStory
   let isBookmarked = false
   let showAbsoluteDate = false
-
+  let registerFocus = useFocus()
   let showLoading = false
 
   $: fullDate = new Date(item.time * 1000).toLocaleString("en-GB")
@@ -32,10 +32,10 @@
   $: dateHover = showAbsoluteDate ? item.time_ago : fullDate
 
   onMount(async () => {
+    window.scrollTo(0, 0)
     const itemID = new URLSearchParams(location.search).get("id")
     setTimeout(() => {
       if (!item.comments) {
-        console.log()
         showLoading = true
       }
     }, 200)
@@ -54,10 +54,6 @@
         isBookmarked = true
       }
     }
-  })
-
-  onDestroy(() => {
-    selectedStory.set({})
   })
 
   function bookmarkThis(event) {
@@ -171,9 +167,7 @@
   <div class="item-header">
     {#if item.title}
       <h1 class="title">
-        {#if item.domain}
-          <a href={item.url}>{item.title}</a>
-        {:else}{item.title}{/if}
+        <a href={item.url} use:registerFocus>{item.title}</a>
       </h1>
       {#if item.domain}
         <div class="url">{item.domain}</div>
