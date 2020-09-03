@@ -55,6 +55,10 @@ a {
   &:visited {
     color: var(--c-link--visited);
   }
+
+  > svg {
+    pointer-events: none;
+  }
 }
 
 input {
