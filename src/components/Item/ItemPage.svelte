@@ -1,11 +1,15 @@
 <script>
   import { onMount, onDestroy, beforeUpdate } from "svelte"
-  import { fade } from "svelte/transition"
+  import { fade, slide } from "svelte/transition"
   import { quadInOut } from "svelte/easing"
   import { useFocus } from "svelte-navigator"
   import Icon from "svelte-awesome"
-  import { faBookmark } from "@fortawesome/free-solid-svg-icons"
   import {
+    faBaby,
+    faBookmark,
+    faExternalLinkAlt,
+  } from "@fortawesome/free-solid-svg-icons"
+  import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons"
   import {
     selectedStory,
     bookmarks,
@@ -18,6 +22,9 @@
   import CommentTree from "./CommentTree.svelte"
   import CommentTreeLoading from "./CommentTreeLoading.svelte"
   import TitleBar from "../TitleBar/TitleBar.svelte"
+  import TitleBarMenu from "../TitleBar/TitleBarMenu.svelte"
+  import TitleBarMenuItem from "../TitleBar/TitleBarMenuItem.svelte"
+  import TitleBarIconButton from "../TitleBar/TitleBarIconButton.svelte"
 
   let item = $selectedStory
   let isBookmarked = false
@@ -100,27 +107,6 @@
     margin-bottom: 2em;
   }
 
-  .bookmark-icon {
-    position: absolute;
-    top: -0.6em;
-    right: 1em;
-    transition: top 200ms ease;
-  }
-
-  .bookmark-icon:hover,
-  .bookmark-icon:focus,
-  .bookmark-icon.isBookmarked {
-    top: -2px;
-  }
-
-  :global(.item-header .bookmark-icon) {
-    fill: var(--c-itempage-bookmark);
-  }
-
-  :global(.item-header .bookmark-icon.isBookmarked) {
-    fill: var(--c-itempage-bookmark--active);
-  }
-
   .url {
     color: var(--c-itempage-url);
   }
@@ -161,7 +147,20 @@
   <title>{item.title || 'Loading...'} · Svelte HN</title>
 </svelte:head>
 
-<TitleBar text="" />
+<TitleBar text="">
+  <TitleBarIconButton
+    icon={isBookmarked ? faBookmark : faBookmarkRegular}
+    style={`${isBookmarked && 'color: var(--c-itempage-bookmark--active);'}`}
+    on:click={bookmarkThis}
+  />
+  <TitleBarMenu>
+    <TitleBarMenuItem icon={faExternalLinkAlt}>
+      <a href={'https://news.ycombinator.com/item?id=' + item.id}>
+        Show on news.ycombinator.com
+      </a>
+    </TitleBarMenuItem>
+  </TitleBarMenu>
+</TitleBar>
 
 <main>
   <div class="item-header">
@@ -174,19 +173,6 @@
       {:else}
         <div aria-hidden class="url">——</div>
       {/if}
-      <div
-        class="bookmark-icon"
-        class:isBookmarked
-        on:click={bookmarkThis}
-        tabindex="0"
-        aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
-      >
-        <Icon
-          scale={2}
-          data={faBookmark}
-          class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
-        />
-      </div>
 
       <div class="meta">
         <span
@@ -199,7 +185,7 @@
         by {item.user} · {item.points} points · {item.comments_count} comments
       </div>
       {#if item.content}
-        <div class="content" in:fade={{ duration: 200 }}>
+        <div class="content" in:slide={{ duration: 200 }}>
           {@html item.content}
         </div>
       {/if}
