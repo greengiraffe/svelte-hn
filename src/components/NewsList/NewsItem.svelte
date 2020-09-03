@@ -38,9 +38,9 @@
     isBookmarked = !isBookmarked
   }
 
-  function setSelectedStory() {
+  function setSelectedStory(event) {
     selectedStory.set(item)
-    navigate(localUrl || `/item/${item.id}`)
+    navigate(event.target.href)
   }
 </script>
 
@@ -183,7 +183,7 @@
       {#if item.domain}
         <a href={item.url}>{item.title}</a>
       {:else}
-        <a href={localUrl} on:click|preventDefault={setSelectedStory}>
+        <a href={item.url} on:click|preventDefault={setSelectedStory}>
           {item.title}
         </a>
       {/if}
@@ -225,7 +225,7 @@
     {#if item.type !== 'job'}
       <a
         class="comments"
-        href={`/item/${item.id}`}
+        href={`/item?id=${item.id}`}
         on:click|preventDefault={setSelectedStory}
       >
         {item.comments_count}

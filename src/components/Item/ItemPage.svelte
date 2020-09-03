@@ -32,13 +32,14 @@
   $: dateHover = showAbsoluteDate ? item.time_ago : fullDate
 
   onMount(async () => {
+    const itemID = new URLSearchParams(location.search).get("id")
     setTimeout(() => {
       if (!item.comments) {
         console.log()
         showLoading = true
       }
     }, 200)
-    item = await API.item(id)
+    item = await API.item(itemID)
     if (isBookmarked) {
       updateBookmark(item)
     }

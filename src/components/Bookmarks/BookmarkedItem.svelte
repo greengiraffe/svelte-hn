@@ -16,7 +16,6 @@
 
   let showRemoveConfirmation = false
 
-  const localUrl = !item.domain ? item.url.replace("?id=", "/") : undefined
   const dateString = new Date(item.time * 1000).toLocaleString("en-GB", {
     weekday: "short",
     year: "numeric",
@@ -26,7 +25,7 @@
     minute: "numeric",
   })
   const metaInfoString = [
-    item.domain || "",
+    item.domain || "news.ycombinator.com",
     item.user ? "posted by " + item.user : "",
     dateString,
   ].join(" · ")
@@ -45,9 +44,9 @@
     removeBookmark(item)
   }
 
-  function setSelectedStory() {
+  function setSelectedStory(event) {
     selectedStory.set(item)
-    navigate(localUrl || `/item/${item.id}`)
+    navigate(event.target.href)
   }
 
   // based on the ago function from https://github.com/odyniec/tinyAgo-js
@@ -268,7 +267,7 @@
         {#if item.domain}
           <a href={item.url}>{item.title}</a>
         {:else}
-          <a href={localUrl} on:click|preventDefault={setSelectedStory}>
+          <a href={item.url} on:click|preventDefault={setSelectedStory}>
             {item.title}
           </a>
         {/if}
@@ -280,7 +279,7 @@
       {#if item.type !== 'job'}
         <a
           class="comments"
-          href={`/item/${item.id}`}
+          href={`/item?id=${item.id}`}
           on:click|preventDefault={setSelectedStory}
         >
           {item.comments_count}+

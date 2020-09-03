@@ -36,9 +36,9 @@
 
 <Router {url}>
   <SideBar />
-  <Route path="/" component={NewsPage} storyType="top" />
+  <Route path="/" component={NewsPage} storyType="top" primary={false} />
+  <Route path="/:storyType" component={NewsPage} primary={false} />
   <Route path="/bookmarks" component={BookmarkPage} />
-  <Route path="/:storyType" component={NewsPage} />
-  <Route path="/item/:id" component={ItemPage} />
+  <Route path="/item" component={ItemPage} />
   <Route path="/not-found" component={NotFoundPage} />
 </Router>
