@@ -33,14 +33,13 @@
   })
 
   function handleDragStart(e) {
+    if (e.button !== 0) return // allow left-click only
     e.target.setPointerCapture(e.pointerId)
     dragging = true
     start = e.clientX
   }
 
   function handleDragEnd(e) {
-    // TODO releasePointerCapture throws an error in (at least) Firefox
-    // e.target.releasePointerCapture(e.pointerId)
     dragging = false
     start = 0
     dragRatio = Math.max(Math.abs(diff) / maxDrag, 0.5)
