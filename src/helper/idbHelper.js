@@ -1,9 +1,8 @@
 import { get, set } from "idb-keyval"
-import { bookmarks, darkMode, expandAllComments } from "../store"
+import { bookmarks, expandAllComments } from "../store"
 
 const idbManagedStores = {
   bookmarks,
-  darkMode,
   expandAllComments,
 }
 
@@ -35,4 +34,15 @@ export function subscribeStoresFromIDB() {
   return () => {
     unsubscribeFunctions.forEach((fn) => fn())
   }
+}
+
+/**
+ * Retrieve values from IndexedDB and update the svelte
+ * stores accordingly. Then subscribe to the stores to
+ * update IndexedDB if a store changes.
+ * @returns a function to unsubscribe from all stores
+ */
+export function initStoresFromIDBAndSubscribe() {
+  initStoresFromIDB()
+  return subscribeStoresFromIDB()
 }

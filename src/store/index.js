@@ -8,10 +8,10 @@ export function showSidebar() {
   sidebarVisible.set(true)
 }
 export function toggleSidebar() {
-  sidebarVisible.update(v => !v)
+  sidebarVisible.update((v) => !v)
 }
 
-export const darkMode = writable(false)
+export const theme = writable("light")
 export const currentStoryType = writable("")
 export const scrollY = writable(0)
 export const lastScrollY = writable(0)

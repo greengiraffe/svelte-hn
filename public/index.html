@@ -20,39 +20,46 @@
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180x180.png" sizes="180x180">
 
     <link rel="stylesheet" href="/build/bundle.css"/>
-
     <script defer src="/build/bundle.js"></script>
+
+    <script>
+      // set color theme as early as possible to prevent visual glitches
+      document.body.className = localStorage.getItem("theme")
+    </script>
+
+    <style>
+      noscript div {
+        padding: 2em;
+        max-width: 40em;
+      }
+  
+      noscript p {
+        padding: 0 0.5em;
+      }
+  
+      noscript h1 {
+        padding: 0 0.5rem;
+        margin-bottom: 1rem;
+      }
+  
+      noscript small {
+        font-size: 1rem;
+      }
+  
+      noscript .important {
+        padding: 0.5em;
+        background: #eee;
+      }
+  
+      noscript hr {
+        margin: 1em 0.5em;
+        color: #eee;
+      }
+    </style>
+    
   </head>
 
-  <style>
-    noscript div {
-      padding: 2em;
-      max-width: 40em;
-    }
-
-    noscript p {
-      padding: 0 0.5em;
-    }
-
-    noscript h1 {
-      padding: 0 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    noscript small {
-      font-size: 1rem;
-    }
-
-    noscript .important {
-      padding: 0.5em;
-      background: #eee;
-    }
-
-    noscript hr {
-      margin: 1em 0.5em;
-      color: #eee;
-    }
-  </style>
+  
   <body>
     <noscript>
       <div>

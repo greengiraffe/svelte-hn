@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte"
-  import { darkMode } from "../../store"
+  import { theme } from "../../store"
 
   export let comment
   export let showingReplies
@@ -34,8 +34,7 @@
       "235, 98%, 62%", // purple
     ],
   }
-  const mode = $darkMode ? "dark" : "light"
-  const color = colors[mode][comment.level % colors[mode].length]
+  const color = colors[$theme][comment.level % colors[$theme].length]
   const commentCount = comment.comments.length
   const commentString = commentCount === 1 ? "answer" : "answers"
   const firstLevel = comment.level === 0

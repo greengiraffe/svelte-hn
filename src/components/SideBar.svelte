@@ -14,15 +14,18 @@
   import {
     sidebarVisible,
     hideSidebar,
-    darkMode,
+    theme,
     bookmarkedStoryCount,
     expandAllComments,
   } from "../store"
 
-  // toggle dark mode
-  $: $darkMode
-    ? document.body.classList.add("dark")
-    : document.body.classList.remove("dark")
+  function updateTheme(e) {
+    if (e.target.checked) {
+      theme.set("dark")
+    } else {
+      theme.set("light")
+    }
+  }
 </script>
 
 <style>
@@ -116,10 +119,8 @@
           <label>
             <input
               type="checkbox"
-              checked={$darkMode}
-              on:click={() => {
-                darkMode.update((v) => !v)
-              }}
+              checked={$theme === 'dark'}
+              on:click={updateTheme}
             />
             Dark Mode
           </label>

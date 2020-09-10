@@ -10,17 +10,19 @@
   import BookmarkPage from "./components/Bookmarks/BookmarkPage.svelte"
 
   import { scrollY } from "./store"
-  import { subscribeStoresFromIDB, initStoresFromIDB } from "./helper/idbHelper"
+  import { initStoresFromIDBAndSubscribe } from "./helper/idbHelper"
+  import { initThemeAndSubscribe } from "./helper/themeHelper"
 
-  let unsubscribeIDBStores
+  let unsubscribeIDBStores, unsubscribeThemeStore
 
   onMount(() => {
-    initStoresFromIDB()
-    unsubscribeIDBStores = subscribeStoresFromIDB()
+    unsubscribeIDBStores = initStoresFromIDBAndSubscribe()
+    unsubscribeThemeStore = initThemeAndSubscribe()
   })
 
   onDestroy(() => {
     unsubscribeIDBStores()
+    unsubscribeThemeStore()
   })
 </script>
 
