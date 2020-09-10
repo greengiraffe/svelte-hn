@@ -64,20 +64,21 @@ export default {
     production && terser(),
 
     // Generate a service worker using workbox for production
-    production &&
-      generateSW({
-        swDest: "public/service-worker.js",
-        sourcemap: !production,
-        globDirectory: "public",
-        globPatterns: ["**/*.{html,js,css,woff2}"],
-        cleanupOutdatedCaches: true,
-        runtimeCaching: [
-          {
-            urlPattern: /\.(png|ico|jpg|svg)$/,
-            handler: "CacheFirst",
-          },
-        ],
-      }),
+    generateSW({
+      swDest: "public/service-worker.js",
+      mode: production ? "production" : "dev",
+      sourcemap: !production,
+      globDirectory: "public",
+      globPatterns: ["**/*.{html,js,css,woff2}"],
+      cleanupOutdatedCaches: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: /\.(png|ico|jpg|svg)$/,
+          handler: "CacheFirst",
+        },
+      ],
+    }),
 
     // make sure the service-worker is removed when developing to
     // avoid running into caching issues when live-reloading is active
