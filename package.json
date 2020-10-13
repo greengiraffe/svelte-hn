@@ -6,9 +6,7 @@
     "dev": "rollup -c -w",
     "start": "sirv public --single",
     "lint": "eslint ./src",
-    "format": "prettier ./src --write",
-    "test": "jest test",
-    "test:watch": "jest test --watch"
+    "format": "prettier ./src --write"
   },
   "devDependencies": {
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
