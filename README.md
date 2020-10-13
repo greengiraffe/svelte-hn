@@ -4,7 +4,7 @@ Another inofficial Hacker News client made with Svelte. It uses [my fork of node
 
 ## Development
 
-The initial project template was based on the [https://github.com/sveltejs/template](official Svelte template). This means [rollup.js](https://rollupjs.org/) is used for JS bundling and [sirv](https://github.com/lukeed/sirv) serves the project locally.
+The initial project template was based on the [official Svelte template](https://github.com/sveltejs/template). This means [rollup.js](https://rollupjs.org/) is used for JS bundling and [sirv](https://github.com/lukeed/sirv) serves the project locally.
 
 ```bash
 # install dependencies
