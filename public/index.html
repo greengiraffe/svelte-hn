@@ -22,11 +22,6 @@
     <link rel="stylesheet" href="/build/bundle.css"/>
     <script defer src="/build/bundle.js"></script>
 
-    <script>
-      // set color theme as early as possible to prevent visual glitches
-      document.body.className = localStorage.getItem("theme")
-    </script>
-
     <style>
       noscript div {
         padding: 2em;
@@ -82,6 +77,9 @@
       </div>
     </noscript>
       
-
+    <script>
+      // set color theme as early as possible to prevent visual glitches
+      document.body.className = localStorage.getItem("theme")
+    </script>
   </body>
 </html>
