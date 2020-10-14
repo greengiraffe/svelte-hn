@@ -8,13 +8,12 @@
   } from "@fortawesome/free-solid-svg-icons"
   import { navigate } from "svelte-navigator"
   import { beforeUpdate } from "svelte"
-  import { get } from "svelte/store"
   import {
-    bookmarks,
     bookmark,
     removeBookmark,
     selectedStory,
     lastFocused,
+    checkIfBookmarked,
   } from "../../store"
   import SwipeToAction from "../SwipeToAction.svelte"
 
@@ -25,7 +24,7 @@
 
   beforeUpdate(() => {
     // mark bookmarked stories
-    isBookmarked = get(bookmarks).some((story) => story.id === item.id)
+    isBookmarked = checkIfBookmarked(item.id)
   })
 
   function bookmarkThis() {

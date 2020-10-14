@@ -15,7 +15,6 @@
     bookmarks,
     bookmark,
     removeBookmark,
-    updateBookmark,
   } from "../../store"
   import { fadeScale } from "../../helper/transitions"
   import API from "../../api"
@@ -25,6 +24,7 @@
   import TitleBarMenu from "../TitleBar/TitleBarMenu.svelte"
   import TitleBarMenuItem from "../TitleBar/TitleBarMenuItem.svelte"
   import TitleBarIconButton from "../TitleBar/TitleBarIconButton.svelte"
+  import StoryCache from "../../helper/storyCache"
 
   let item = $selectedStory
   let isBookmarked = false
@@ -46,9 +46,14 @@
         showLoading = true
       }
     }, 200)
+
+    const cachedItem = await StoryCache.get(itemID)
+    if (cachedItem !== undefined) {
+      item = cachedItem
+      // Update cached item via network
+      StoryCache.fetchAndUpdate(itemID)
+    } else {
     item = await API.item(itemID)
-    if (isBookmarked) {
-      updateBookmark(item)
     }
   })
 
@@ -216,5 +221,4 @@
       </div>
     {/if}
   </div>
-
 </main>

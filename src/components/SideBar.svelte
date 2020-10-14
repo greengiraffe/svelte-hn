@@ -17,6 +17,7 @@
     theme,
     bookmarkedStoryCount,
     expandAllComments,
+    downloadBookmarks
   } from "../store"
 
   function updateTheme(e) {
@@ -135,6 +136,18 @@
               }}
             />
             Expand all comments
+          </label>
+        </li>
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              checked={$downloadBookmarks}
+              on:click={() => {
+                downloadBookmarks.update((v) => !v)
+              }}
+            />
+            Download Bookmarks
           </label>
         </li>
       </ul>

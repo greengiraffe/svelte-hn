@@ -1,9 +1,10 @@
 import { get, set } from "idb-keyval"
-import { bookmarks, expandAllComments } from "../store"
+import { bookmarks, expandAllComments, downloadBookmarks } from "../store"
 
 const idbManagedStores = {
   bookmarks,
   expandAllComments,
+  downloadBookmarks
 }
 
 /**

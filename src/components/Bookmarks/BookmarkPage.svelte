@@ -8,6 +8,7 @@
     lastScrollY,
     scrollY,
   } from "../../store"
+  import StoryCache from "../../helper/storyCache"
   import BookmarkedItemList from "./BookmarkedItemList.svelte"
   import {
     faSearch,
@@ -54,6 +55,7 @@
     )
     if (remove) {
       bookmarks.set([])
+      StoryCache.clearAll()
     }
   }
 
@@ -139,8 +141,6 @@
       />
     </div>
     <BookmarkedItemList items={filteredStories} />
-    <!-- <div class="action-wrapper">
-    </div> -->
   {:else}
     <div class="empty-wrapper">
       <p>No stories bookmarked.</p>
