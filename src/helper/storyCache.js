@@ -1,7 +1,7 @@
-import { clear, del, set as idbSet, get as idbGet, Store } from "idb-keyval"
-import API from "../api"
+import { clear, createStore, del, get as idbGet, set as idbSet } from "idb-keyval";
+import API from "../api";
 
-const cache = new Store("story-cache", "stories")
+const cache = createStore("story-cache", "stories")
 
 /**
  * Update a value for a given key using an update

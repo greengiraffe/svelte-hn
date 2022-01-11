@@ -3,7 +3,6 @@
   import { Router, Route } from "svelte-navigator"
   export let url = ""
 
-  import SideBar from "./components/SideBar.svelte"
   import NewsPage from "./components/NewsList/NewsPage.svelte"
   import ItemPage from "./components/Item/ItemPage.svelte"
   import NotFoundPage from "./components/NotFoundPage.svelte"
@@ -41,7 +40,6 @@
 <svelte:window bind:scrollY={$scrollY} />
 
 <Router {url} primary={false}>
-  <SideBar />
   <Route path="/" component={NewsPage} storyType="top" />
   <Route path="/:storyType" component={NewsPage} />
   <Route path="/bookmarks" component={BookmarkPage} />

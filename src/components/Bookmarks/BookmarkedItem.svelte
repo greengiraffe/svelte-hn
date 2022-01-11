@@ -215,12 +215,12 @@
   }
 
   :global(.item .bookmark-icon.isBookmarked) {
-    fill: var(--c-newsitem-bookmark);
+    color: var(--c-newsitem-bookmark);
     opacity: 1;
   }
 
   :global(.item .briefcase-icon) {
-    fill: var(--c-newsitem-job-icon);
+    color: var(--c-newsitem-job-icon);
     margin-top: 1em;
   }
   */

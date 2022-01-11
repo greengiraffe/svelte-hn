@@ -15,17 +15,20 @@
 
   // Reactive properties
   $: actionOpacity = Math.min(0.25 + Math.abs(diff) / maxDrag, 1)
+
+  // Note: the !important is used to transition regardless of
+  // the global prefers-reduced-motion setting
   $: contentStyle = `
 		transform: translate3d(${diff}px,0,0);
 		transition: transform ${
       dragging ? 0 : TRANSITION_DURATION * dragRatio
-    }ms ease-out;
+    }ms ease-out !important;
 	`
   $: actionsStyle = `
 		opacity: ${actionOpacity};
 		transition: opacity ${
       dragging ? 0 : TRANSITION_DURATION * dragRatio
-    }ms ease-out;
+    }ms ease-out !important;
 	`
 
   onMount(() => {

@@ -5,16 +5,16 @@
   export let text = ""
 </script>
 
-<style>
+<style lang="scss">
   .titlebar-menu-item {
     border-radius: 0;
     background-color: var(--c-background);
     padding: 1em 1em;
     text-align: left;
-  }
 
-  .titlebar-menu-item + .titlebar-menu-item {
-    border-top: 1px solid var(--c-border);
+    + .titlebar-menu-item {
+      border-top: 1px solid var(--c-border);
+    }
   }
 
   .titlebar-menu-item:hover {

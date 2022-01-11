@@ -164,7 +164,7 @@
     top: -1px;
     opacity: 0;
     transition: opacity 0.2s ease, fill 0.2s ease;
-    fill: var(--c-newsitem-bookmark);
+    color: var(--c-newsitem-bookmark);
   }
 
   :global(.item .bookmark-icon.isBookmarked) {
@@ -172,34 +172,15 @@
   }
 
   :global(.item .briefcase-icon) {
-    fill: var(--c-newsitem-job-icon);
+    color: var(--c-newsitem-job-icon);
     margin-top: 1em;
   }
 </style>
 
 <SwipeToAction on:action-right={bookmarkThis} on:action-left={bookmarkThis}>
   <div class="item" slot="content">
-    <button
-      class="side"
-      on:click={bookmarkThis}
-      aria-label={isBookmarked ? 'remove bookmark' : 'bookmark'}
-    >
-      <Icon
-        data={faBookmark}
-        class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
-        on:click={bookmarkThis}
-      />
-      {#if rank}
-        <div class="rank">{rank}</div>
-      {/if}
-      {#if item.points}
-        <div class="points">{item.points}p</div>
-      {/if}
-      {#if item.type === 'job'}
-        <Icon data={faBriefcase} class="briefcase-icon" />
-      {/if}
-    </button>
 
+    <!-- TITLE -->
     <h2 class="title">
       {#if item.domain}
         <a href={item.url}>{item.title}</a>
@@ -209,22 +190,52 @@
         </a>
       {/if}
     </h2>
+    <!-- DOMAIN -->
+    {#if item.domain}
+    <div class="url">{item.domain}</div>
+  {:else}
+    <div aria-hidden class="no-url">——</div>
+  {/if}
+    <!-- CREDITS -->
     <div class="meta">
-      <span>{item.time_ago}</span>
+      {item.time_ago}
       {#if item.user}
-        <span>by {item.user}</span>
+        by {item.user}
       {/if}
     </div>
-    {#if item.domain}
-      <div class="url">{item.domain}</div>
-    {:else}
-      <div aria-hidden class="no-url">——</div>
-    {/if}
+
+    <!-- BOOKMARK BUTTON & RANK INFO -->
+    <button
+      class="side"
+      on:click={bookmarkThis}
+      type="button"
+      aria-pressed={isBookmarked}
+      aria-label={"bookmark"}
+      title={isBookmarked ? "Remove bookmark" : "Add bookmark"}
+    >
+      <Icon
+        data={faBookmark}
+        class="bookmark-icon {isBookmarked ? 'isBookmarked' : ''}"
+        on:click={bookmarkThis}
+      />
+      {#if rank}
+        <div class="rank"><span class="screenreader-text">item rank </span>{rank}</div>
+      {/if}
+      {#if item.points}
+        <div class="points">
+          {item.points}<span aria-hidden="true">p</span><span class="screenreader-text"> points</span></div>
+      {/if}
+      {#if item.type === 'job'}
+        <Icon data={faBriefcase} class="briefcase-icon"/>
+        <span class="screenreader-text">job item</span>
+      {/if}
+    </button>
 
     {#if item.type !== 'job'}
       <a
         class="comments"
         href={`/item?id=${item.id}`}
+        aria-label={`show ${item.comments_count} comments`}
         on:click|preventDefault={setSelectedStory}
       >
         {item.comments_count}

@@ -1,13 +1,14 @@
-import svelte from "rollup-plugin-svelte"
-import sveltePreprocess from "svelte-preprocess"
+import commonjs from "@rollup/plugin-commonjs"
 import resolve from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
-import commonjs from "@rollup/plugin-commonjs"
-import livereload from "rollup-plugin-livereload"
-import del from "rollup-plugin-delete"
-import { terser } from "rollup-plugin-terser"
 import { config } from "dotenv"
+import css from 'rollup-plugin-css-only'
+import del from "rollup-plugin-delete"
+import livereload from "rollup-plugin-livereload"
+import svelte from "rollup-plugin-svelte"
+import { terser } from "rollup-plugin-terser"
 import { generateSW } from "rollup-plugin-workbox"
+import sveltePreprocess from "svelte-preprocess"
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -30,13 +31,16 @@ export default {
   plugins: [
     svelte({
       // enable run-time checks when not in production
-      dev: !production,
-      // we'll extract any component CSS out into
-      // a separate file - better for performance
-      css: (css) => {
-        css.write("bundle.css", !production)
+      compilerOptions: {
+        dev: !production
       },
       preprocess: [sveltePreprocess({ scss: true })],
+    }),
+    
+    // Process environment variables
+    replace({
+      preventAssignment: false,
+      "process.env.API_URL": JSON.stringify(envVars.API_URL)
     }),
 
     // If you have external dependencies installed from
@@ -50,6 +54,9 @@ export default {
     }),
 
     commonjs(),
+
+    // Extract CSS into a separate file
+    css({ output: "bundle.css" }),
 
     // In dev mode, call `npm run start` once
     // the bundle has been generated
@@ -85,14 +92,7 @@ export default {
     !production &&
       del({
         targets: "public/service-worker.js",
-      }),
-
-    // Process environment variables
-    replace({
-      __ENV_VARS__: JSON.stringify({
-        ...envVars,
-      }),
-    }),
+      })
   ],
   watch: {
     clearScreen: false,

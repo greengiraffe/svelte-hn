@@ -3,6 +3,7 @@
   import { link } from "svelte-navigator"
   import { toggleSidebar } from "../../store"
   import TitleBarIconButton from "./TitleBarIconButton.svelte"
+  import SideBar from "../SideBar.svelte"
 
   export let isPrimaryHeading = false
   export let text
@@ -37,7 +38,8 @@
 </style>
 
 <header>
-  <TitleBarIconButton icon={faBars} on:click={toggleSidebar} />
+  <TitleBarIconButton icon={faBars} on:click={toggleSidebar} title="Menu"/>
+  <SideBar />
   {#if isPrimaryHeading}
     <h1 class="title">
       <a href="/top" use:link>{title}</a>

@@ -43,7 +43,7 @@
   })
 
   function loadInitialItems() {
-    scrollToTop()
+    window.scrollTo(0, 0)
     const LOADING_INDICATOR_DELAY = 200 // ms
     let isLoading = true
     currentPage = 1
@@ -66,6 +66,7 @@
         newsItems.set(res)
         isLoading = false
         showLoadingIndicator = false
+        getFocusableElements()[0].focus()
       })
       .catch((err) => {
         if (err instanceof InvalidStoryTypeError) {
@@ -100,10 +101,10 @@
 
         // Focus next new element after they have been rendered
         await tick()
-        const nextFocusable = document.querySelectorAll(".item button")[
+        const nextItem = document.querySelectorAll(".item")[
           PAGE_SIZE * (currentPage - 1)
         ]
-        nextFocusable.focus()
+        getFocusableElements(nextItem)[0].focus()
         // Prevent browser from scrolling due to the newly set focus
         window.scrollTo({ top: currentScrollY })
       })
@@ -114,6 +115,15 @@
 
   function scrollToTop() {
     window.scrollTo(0, 0)
+    getFocusableElements()[0].focus()
+  }
+
+  function getFocusableElements(node) {
+    const focusableElementsSelector = 'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    if (node !== undefined) {
+      return node.querySelectorAll(focusableElementsSelector)
+    }
+    return document.querySelectorAll(focusableElementsSelector);
   }
 </script>
 
@@ -129,10 +139,8 @@
 
   .up-button {
     position: absolute;
-    left: 0;
+    right: 0;
     margin: 0.5em;
-    width: 2em;
-    height: 2em;
   }
 </style>
 
@@ -149,21 +157,16 @@
       delayTransition={currentPage === 1}
       showTransition={!$newsItems}
     />
-    {#if hasMorePages}
-      <div class="more-wrapper">
+    <div class="more-wrapper">
+        {#if hasMorePages}
         <button class="more-button" on:click={loadNextPage}>Load more</button>
-        <button class="up-button" on:click={scrollToTop}>
-          <Icon class="up-button-icon" data={faArrowUp} />
+        {:else}
+          <p class="no-more-pages">No more pages to load.</p>
+        {/if}
+        <button type="button" class="up-button" on:click={scrollToTop}>
+          Back to top <Icon data={faArrowUp} />
         </button>
       </div>
-    {:else}
-      <div class="more-wrapper">
-        <p class="no-more-pages">No more pages to load.</p>
-        <button class="up-button" on:click={scrollToTop} title="Go up">
-          <Icon data={faArrowUp} />
-        </button>
-      </div>
-    {/if}
   {:else}
     <NewsItemsLoading />
   {/if}

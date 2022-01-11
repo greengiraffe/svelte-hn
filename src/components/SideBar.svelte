@@ -155,8 +155,7 @@
 
     <div class="section info">
       <div>
-        Svelte HN on
-        <a href="https://github.com/greengiraffe/svelte-hn">GitHub</a>
+        <a href="https://github.com/greengiraffe/svelte-hn">Svelte HN on GitHub</a>
       </div>
     </div>
 

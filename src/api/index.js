@@ -1,8 +1,8 @@
 // import { news, item } from "./mockApiResponse
-import { validStoryType, storyTypeMap } from "./storyTypes"
 import { InvalidStoryTypeError } from "./errors"
+import { storyTypeMap, validStoryType } from "./storyTypes"
 
-const BASE_URL = __ENV_VARS__.API_URL
+const BASE_URL = process.env.API_URL
 
 const API = {
   /**

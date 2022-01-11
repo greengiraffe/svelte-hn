@@ -116,7 +116,13 @@
   </div>
   <div class="footer">
     {#if commentCount > 0}
-      <button class="toggle-comments-button" on:click={toggleReplies}>
+      <button
+        type="button"
+        aria-pressed={showingReplies}
+        aria-label={showingReplies ? "Hide answers" : `Show ${commentCount} answers`}
+        class="toggle-comments-button"
+        on:click={toggleReplies}
+      >
         <span class="reply-toggle-symbol">{replyToggleSymbol}</span>
         <span class="comment-count">{commentCount} {commentString}</span>
       </button>

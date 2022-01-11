@@ -156,6 +156,7 @@
   <TitleBarIconButton
     icon={isBookmarked ? faBookmark : faBookmarkRegular}
     style={`${isBookmarked && 'color: var(--c-itempage-bookmark--active);'}`}
+    title={isBookmarked ? "Remove bookmark" : "Bookmark"}
     on:click={bookmarkThis}
   />
   <TitleBarMenu>
