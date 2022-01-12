@@ -142,6 +142,16 @@
     right: 0;
     margin: 0.5em;
   }
+
+  .up-button-text {
+    display: none
+  }
+
+  @media screen and (min-width: 500px) {
+    .up-button-text {
+      display: inline
+    }
+  }
 </style>
 
 <svelte:head>
@@ -163,8 +173,8 @@
         {:else}
           <p class="no-more-pages">No more pages to load.</p>
         {/if}
-        <button type="button" class="up-button" on:click={scrollToTop}>
-          Back to top <Icon data={faArrowUp} />
+        <button type="button" class="up-button" on:click={scrollToTop} aria-label="Back to top">
+          <span class="up-button-text">Back to top </span><Icon data={faArrowUp} />
         </button>
       </div>
   {:else}
